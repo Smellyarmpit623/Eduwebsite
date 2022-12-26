@@ -10,6 +10,7 @@ import Rightbar from './Rightbar';
 import Feed from './Feed';
 import CssBaseline from '@mui/material/CssBaseline';
 import 'katex/dist/katex.min.css'
+import { AuthProvider } from 'react-auth-kit';
 
 const darkTheme = createTheme({
   palette: {
@@ -21,6 +22,12 @@ function App() {
   
   return (
     <ThemeProvider theme={darkTheme}>
+    <AuthProvider
+      authType={"cookie"}
+      authName={"_auth"}
+      cookieDomain={window.location.hostname}
+      cookieSecure={false}
+    >
     <CssBaseline />
     <Box>
       <Navbar/>
@@ -36,6 +43,7 @@ function App() {
       </Grid>
       </Grid>
     </Box>
+    </AuthProvider>
     </ThemeProvider>
   );
 }
