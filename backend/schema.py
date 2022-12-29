@@ -25,3 +25,13 @@ class CourseItem(BaseModel):
     ItemName:str
     class Config:
         orm_mode = True
+
+class CourseItemUpdate(BaseModel):
+    CourseID:str
+    ItemName:str
+    MarkdownUpdate:str
+    NewItemName:str
+    class Config:
+        orm_mode = True
+
+

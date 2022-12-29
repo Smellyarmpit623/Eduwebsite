@@ -4,6 +4,7 @@ from fastapi import Depends
 import db_model
 from datetime import datetime
 import passlib.hash
+import os
 import jwt
 import json
 import fastapi.security
@@ -52,3 +53,28 @@ async def add_item(db_session, item:_schema.CourseItem):
 async def create_md(mdname):
     f = open("./mds/"+mdname + ".md", "a")
     f.close()
+
+
+async def itemselector(db_session,Item:_schema.CourseItemUpdate):
+    item=db_session.query(db_model.Course).filter(db_model.Course.ItemName==Item.ItemName).first()
+    if item is None:
+        raise fastapi.HTTPException(status_code=404,detail="Item does not exist")
+    return item
+
+async def itemupdate(db_session,Item:_schema.CourseItemUpdate):
+    item=db_session.query(db_model.Course).filter(db_model.Course.ItemName==Item.ItemName).first()
+    if item is None:
+        raise fastapi.HTTPException(status_code=404, detail="Item does not exist")
+    oldfilepath="./mds/"+ item.ItemName +".md"
+    f = open(oldfilepath, "w")
+    f.write(Item.MarkdownUpdate)
+    f.close()
+    newfilepath="./mds/"+ Item.NewItemName +".md"
+    os.rename(oldfilepath,newfilepath)
+    item.ItemName=Item.NewItemName
+    db_session.commit()
+    try:
+        db_session.refresh(db_model.Course)
+    except:
+        pass
+

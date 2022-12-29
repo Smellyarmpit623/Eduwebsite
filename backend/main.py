@@ -23,6 +23,8 @@ app.add_middleware(
     allow_credentials=True,
 )
 
+WritePermission=['Admin','Teacher Assistant','Tutor','Teacher']
+
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
@@ -60,17 +62,30 @@ async def get_user(user:schema.User=fastapi.Depends(get_current_user)):
 
 @app.post("/Course/AddItem",response_model=schema.CourseItem)
 async def Add_Item(Item:schema.CourseItem,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
-    if user.Title=="Teacher" or user.Title=="Tutor" or user.Title=="Teacher Assistant" or user.Title == "Admin":
+    if user.Title in WritePermission:
         await create_md(Item.ItemName)
         return await add_item(item=Item,db_session=db_session)
     else:
         raise fastapi.HTTPException(status_code=401,detail="Not authenticated")
 
 
+@app.delete("/Course/DeleteItem")
+async def DeleteItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
+    if user.Title in WritePermission:
+        item=await itemselector(Item=Item,db_session=db_session)
+        db_session.delete(item)
+        db_session.commit()
+        return {"Msg":"Item has been deleted"}
+    else:
+        raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
 
-
-
-
+@app.put("/Course/UpdateItem")
+async def UpdateItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
+    if user.Title in WritePermission:
+        await itemupdate(Item=Item,db_session=db_session)
+        return {"Msg":"Item has been Updated"}
+    else:
+        raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
 
 
 
