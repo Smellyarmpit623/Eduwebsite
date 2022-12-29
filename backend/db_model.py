@@ -24,16 +24,18 @@ class User(Base):
 
 class Course(Base):
     __tablename__ = "Course"
-    CourseID = Column("CourseID", String, primary_key=True)
+    ItemID=Column("ItemID", Integer,primary_key=True)
+    CourseID = Column("CourseID", String)
     ItemName = Column("ItemName", String)
-    def __init__(self, CourseID, ItemName):
+    def __init__(self,CourseID, ItemName):
+        self.ItemID=None
         self.CourseID=CourseID
         self.ItemName=ItemName
 
 
 def connection_to_database():
     engine=create_engine("sqlite:///DB.db",echo=True)
-    # Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
     Session=sessionmaker(autocommit=False, autoflush=False, bind=engine)
     try:
         session=Session()
@@ -44,7 +46,7 @@ def connection_to_database():
 
 
 
-# db=connection_to_database(Base)
+db=connection_to_database()
 # student=User("Steve","123123",datetime.datetime(2023, 6, 23),"Student")
 # admin=User("admin","admin",datetime.datetime(2222,12,12),"Admin")
 # db.add(student)
