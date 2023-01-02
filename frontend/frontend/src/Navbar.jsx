@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Container, Typography,Stack, AppBar, Toolbar, styled, InputBase, Badge, Avatar, Menu, MenuItem} from '@mui/material';
-import { Mail , Notifications} from '@mui/icons-material';
+import { Mail , Notifications, Token} from '@mui/icons-material';
 import { useState } from 'react';
+import { UserContext } from './Context/UserContext';
+import LoginForm from './LoginForm';
 
 const StyledToolbar = styled(Toolbar)({
   display:"flex",
@@ -31,6 +33,7 @@ const UserIconsContainer = styled(Box)(({theme})=>({
 
 const Navbar = () => {
   const [UserMenu, setUserMenu] = useState(false)
+  const [token,settoken]=useContext(UserContext)
   return (
     <AppBar position='sticky'> 
       <StyledToolbar> 
@@ -39,19 +42,20 @@ const Navbar = () => {
 
 
         <IconsContainer> 
-          <Badge badgeContent="10" color="warning">
+          <Badge badgeContent={!token? (0):(10)} color="warning">
             <Mail/>
           </Badge>
 
-          <Badge badgeContent="2" color="warning">
+          <Badge badgeContent={!token? (0):(2)} color="warning">
             <Notifications/>
           </Badge>
-
-          <Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
+          {!token? (<LoginForm/>):(<Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
             width:42,
             height:42,
           }}
-          ></Avatar>
+          ></Avatar>)}
+
+          
 
         </IconsContainer>
       </StyledToolbar>

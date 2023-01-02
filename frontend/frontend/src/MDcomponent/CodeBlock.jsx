@@ -2,13 +2,12 @@ import { Fragment, useContext, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { CopyIcon, PasteIcon } from './Icons/Icons.jsx';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
+import { Alert, Button } from '@mui/material';
 import { Box } from '@mui/system';
 
 
@@ -41,15 +40,14 @@ const Code = ({ children, language }) => {
       position: "relative"
     }}>
       <CopyToClipboard text={children} onCopy={() => setCopied(true)}>
-
-        <button onClick={handleClick} style={{
+        <IconButton onClick={handleClick} style={{
           position: "absolute",
           top: "1rem",
           right: "22%",
           zIndex: "5"
         }}>
           {copied ? <ContentPasteIcon /> : <ContentCopyIcon />}
-        </button>
+        </IconButton>
 
         
 

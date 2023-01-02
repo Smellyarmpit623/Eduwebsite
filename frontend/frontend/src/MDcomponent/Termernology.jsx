@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
-import nigga from './nigga.txt'
+import nigga from '../nigga.txt'
 import Code from './CodeBlock';
 import { YTPlayer } from './YoutubePlayer';
 import { LatexComponent } from './Latex';

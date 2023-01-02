@@ -31,12 +31,12 @@ async def create_token(para_user:db_model.User):
 
 
 async def get_current_user(db_session=fastapi.Depends(db_model.connection_to_database), token:str= fastapi.Depends(oauth2schema)):
-    # try:
-    payload = jwt.decode(token,JWT_SECRET,algorithms=["HS256"])
-    print(payload)
-    user= db_session.query(db_model.User).get(payload["User_ID"])
-    # except:
-    #     raise fastapi.HTTPException(status_code=401,detail="Not authenticated")
+    try:
+        payload = jwt.decode(token,JWT_SECRET,algorithms=["HS256"])
+        print(payload)
+        user= db_session.query(db_model.User).get(payload["User_ID"])
+    except:
+        raise fastapi.HTTPException(status_code=401,detail="Not authenticated")
 
     return _schema.User.from_orm(user)
 

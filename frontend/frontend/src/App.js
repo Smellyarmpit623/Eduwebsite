@@ -11,6 +11,7 @@ import Feed from './Feed';
 import CssBaseline from '@mui/material/CssBaseline';
 import 'katex/dist/katex.min.css'
 import { AuthProvider } from 'react-auth-kit';
+import { UserContextProvider } from './Context/UserContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -21,13 +22,8 @@ const darkTheme = createTheme({
 function App() {
   
   return (
+    <UserContextProvider>
     <ThemeProvider theme={darkTheme}>
-    <AuthProvider
-      authType={"cookie"}
-      authName={"_auth"}
-      cookieDomain={window.location.hostname}
-      cookieSecure={false}
-    >
     <CssBaseline />
     <Box>
       <Navbar/>
@@ -43,9 +39,10 @@ function App() {
       </Grid>
       </Grid>
     </Box>
-    </AuthProvider>
     </ThemeProvider>
+    </UserContextProvider>
   );
 }
 
 export default App;
+  
