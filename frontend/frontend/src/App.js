@@ -12,6 +12,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import 'katex/dist/katex.min.css'
 import { AuthProvider } from 'react-auth-kit';
 import { UserContextProvider } from './Context/UserContext';
+import { SnackbarContextProvider, SnackContext } from './Context/Snackbar';
+import { GlobalSnackbar } from './Snackbar';
 
 const darkTheme = createTheme({
   palette: {
@@ -23,7 +25,10 @@ function App() {
   
   return (
     <UserContextProvider>
+    <SnackbarContextProvider>
+    <GlobalSnackbar/>
     <ThemeProvider theme={darkTheme}>
+      
     <CssBaseline />
     <Box>
       <Navbar/>
@@ -40,6 +45,7 @@ function App() {
       </Grid>
     </Box>
     </ThemeProvider>
+    </SnackbarContextProvider>
     </UserContextProvider>
   );
 }

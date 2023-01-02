@@ -31,9 +31,16 @@ const UserIconsContainer = styled(Box)(({theme})=>({
 
 }))
 
+
+
 const Navbar = () => {
   const [UserMenu, setUserMenu] = useState(false)
   const [token,settoken]=useContext(UserContext)
+  const Logout=()=>{
+    settoken(null)
+    localStorage.setItem("Token",null)
+    setUserMenu(false)
+  }
   return (
     <AppBar position='sticky'> 
       <StyledToolbar> 
@@ -49,7 +56,7 @@ const Navbar = () => {
           <Badge badgeContent={!token? (0):(2)} color="warning">
             <Notifications/>
           </Badge>
-          {token==null? (<LoginForm/>):(<Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
+          {!token? (<LoginForm/>):(<Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
             width:42,
             height:42,
           }}
@@ -75,7 +82,7 @@ const Navbar = () => {
       >
         <MenuItem>Profile</MenuItem>
         <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={Logout}>Logout</MenuItem>
       </Menu>
     </AppBar>
   )

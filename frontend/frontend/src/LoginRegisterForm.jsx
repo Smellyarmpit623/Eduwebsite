@@ -15,6 +15,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import axios from 'axios';
 import { UserContext } from './Context/UserContext';
+import { SnackContext } from './Context/Snackbar';
 
 
 function PaperComponent(props) {
@@ -45,6 +46,9 @@ const LoginForm = () => {
   const [RegPassword,setRegPassword]=useState("")
   const [ConfirmPassword,setConfirmPassword]=useState("")
   const [token,settoken]=useContext(UserContext)
+  const [GBsnack,setGBsnack]=useContext(SnackContext)
+  const [snackmsg,setsnackmsg]=useContext(SnackContext)
+  const [snackseverity,setsnackseverity]=useContext(SnackContext)
 
   const handleLogin = async() => {
     //
@@ -99,9 +103,9 @@ const LoginForm = () => {
       axios.request(requestoption)
       .then(function(response){
         settoken(response.data.access_token)
-        setErrorMsg("已登录")
-        setnotifytype("success")
-        setnotiopen(true);
+        setsnackmsg("已登录")
+        setsnackseverity("success")
+        setGBsnack(true);
 
       })
       .catch(function(error){
