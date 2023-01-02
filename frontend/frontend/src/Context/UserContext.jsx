@@ -8,7 +8,7 @@ export const UserContextProvider=(props)=>{
     const [token,settoken]=useState(localStorage.getItem("Token"))
     useEffect(()=>{
         const fetchuser=async()=>{
-            const response=axios.get('http://127.0.0.1:8000/User/Me/',{
+            const response=await axios.get('http://127.0.0.1:8000/User/Me/',{
                 headers: {
                     "Accept":"application/json",
                     "Authorization":"Bearer "+token
@@ -21,7 +21,7 @@ export const UserContextProvider=(props)=>{
                 console.log(error)
             })
             if(!response.ok){
-                settoken(null)
+                settoken('')
             }
             localStorage.setItem("Token",token)
         };

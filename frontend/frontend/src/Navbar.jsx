@@ -3,7 +3,7 @@ import { Box, Container, Typography,Stack, AppBar, Toolbar, styled, InputBase, B
 import { Mail , Notifications, Token} from '@mui/icons-material';
 import { useState } from 'react';
 import { UserContext } from './Context/UserContext';
-import LoginForm from './LoginForm';
+import LoginForm from './LoginRegisterForm';
 
 const StyledToolbar = styled(Toolbar)({
   display:"flex",
@@ -49,7 +49,7 @@ const Navbar = () => {
           <Badge badgeContent={!token? (0):(2)} color="warning">
             <Notifications/>
           </Badge>
-          {!token? (<LoginForm/>):(<Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
+          {token==null? (<LoginForm/>):(<Avatar src='https://images.indianexpress.com/2022/10/cat-1200.jpg' onClick={e=>setUserMenu(true)} sx={{
             width:42,
             height:42,
           }}
