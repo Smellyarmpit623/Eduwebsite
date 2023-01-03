@@ -14,9 +14,10 @@ import Slide from '@mui/material/Slide';
 import { SnackContext } from './Context/Snackbar';
 
 export const GlobalSnackbar = () => {
-    const [GBsnack,setGBsnack]=useContext(SnackContext)
-    const [snackmsg,setsnackmsg]=useContext(SnackContext)
-    const [snackseverity,setsnackseverity]=useContext(SnackContext)
+    const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+    const [GBsnack,setGBsnack]=GBsnack1
+    const [snackmsg,setsnackmsg]=snackmsg1
+    const [snackseverity,setsnackseverity]=snackseverity1
     const handleClose=()=>{
         setGBsnack(false)
     }
@@ -26,9 +27,8 @@ export const GlobalSnackbar = () => {
           open={GBsnack}
           autoHideDuration={5000}
           onClose={handleClose}
-          message="Code Copied"
       >
-        <Alert severity="success" sx={{ width: '100%' }}>
+        <Alert severity={snackseverity} sx={{ width: '100%', backgroundColor:'inherit',color:"wheat" }}>
           {snackmsg}
         </Alert>
     </Snackbar>

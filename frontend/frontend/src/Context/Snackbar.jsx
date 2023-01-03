@@ -8,7 +8,7 @@ export const SnackbarContextProvider = (props) => {
     const [snackseverity,setsnackseverity]=useState("success")
   return (
     
-    <SnackContext.Provider value={[GBsnack,setGBsnack,snackmsg,setsnackmsg,snackseverity,setsnackseverity]}>
+    <SnackContext.Provider value={{GBsnack1:[GBsnack,setGBsnack],snackmsg1:[snackmsg,setsnackmsg],snackseverity1:[snackseverity,setsnackseverity]}}>
         {props.children}
     </SnackContext.Provider>
   )

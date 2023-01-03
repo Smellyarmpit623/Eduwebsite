@@ -46,9 +46,10 @@ const LoginForm = () => {
   const [RegPassword,setRegPassword]=useState("")
   const [ConfirmPassword,setConfirmPassword]=useState("")
   const [token,settoken]=useContext(UserContext)
-  const [GBsnack,setGBsnack]=useContext(SnackContext)
-  const [snackmsg,setsnackmsg]=useContext(SnackContext)
-  const [snackseverity,setsnackseverity]=useContext(SnackContext)
+  const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+  const [GBsnack,setGBsnack]=GBsnack1
+  const [snackmsg,setsnackmsg]=snackmsg1
+  const [snackseverity,setsnackseverity]=snackseverity1
 
   const handleLogin = async() => {
     //
@@ -66,7 +67,29 @@ const LoginForm = () => {
           password:Password
         }
       }
-      const response= await axios.request(requestoption)
+      await axios.request(requestoption)
+      .then(function(response){
+        settoken(response.data.access_token)
+        setsnackmsg("已登录")
+        setsnackseverity("success")
+        setGBsnack(true);
+
+      })
+      .catch(function(error){
+        if (error.response) {
+          if(error.response.data.detail==="Invalid Credentials" || error.response.status===401)
+          {
+            setErrorMsg("密码或用户名错误")
+            setnotifytype("error")
+            setnotiopen(true);
+          }
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+      })
+
       setnotiopen(true);
     }
     else{
@@ -110,7 +133,7 @@ const LoginForm = () => {
       })
       .catch(function(error){
         if (error.response) {
-          if(error.response.data.detail==="User name already in use")
+          if(error.response.data.detail==="User name already in use" || error.response.status===400)
           {
             setErrorMsg("用户已经存在")
             setnotifytype("error")
