@@ -58,7 +58,7 @@ const Sidebar = () => {
             <ListItemIcon>
               <PlayLessonIcon />
             </ListItemIcon>
-            <ListItemText primary="Week 0 Introducing Rate Of Change" />
+            <ListItemText primary="Week 0 Introducing Rate Of Change"/>
           </ListItemButton>
         </List>
       </Collapse>
