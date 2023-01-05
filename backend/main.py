@@ -29,9 +29,9 @@ WritePermission=['Admin','Teacher Assistant','Tutor','Teacher']
 async def read_root():
     return {"Hello": "World"}
 
-@app.get("/Course/GetCourseItem/",response_model=List[schema.CourseItem])
-async def GetCourseItem(db_session=fastapi.Depends(connection_to_database)):
-    result=db_session.query(Course).all()
+@app.get("/Course/GetCourseItem/{ID}",response_model=List[schema.CourseItem])
+async def GetCourseItem(ID,db_session=fastapi.Depends(connection_to_database)):
+    result=db_session.query(Course).filter(Course.CourseID==ID).all()
     return result
 
 

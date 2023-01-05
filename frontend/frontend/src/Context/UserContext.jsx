@@ -24,7 +24,6 @@ export const UserContextProvider=(props)=>{
                 
               }
               else{
-                const title="";
                 response.json().then((User)=>{
                   if(User.Title === "Admin" || User.Title === "Teacher Assistant" || User.Title === "Tutor" || User.Title === "Teacher")
                   {

@@ -48,6 +48,24 @@ function PaperComponent(props) {
   );
 }
 
+function CourseItem(props){
+  return(
+      <ListItemButton sx={{ pl: 4 }}>
+        <ListItemIcon>
+          <PlayLessonIcon />
+        </ListItemIcon>
+        <ListItemText primary={props.ItemName}/>
+        <Button>编辑</Button>
+      </ListItemButton>
+  )
+}
+
+function DisplayItems(Item_list){
+  console.log("123"+Item_list)
+  Item_list.map((item)=>
+    <CourseItem value={item}/>
+  )
+}
 
 
 const Sidebar = () => {
@@ -61,8 +79,15 @@ const Sidebar = () => {
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
+  const [cab202,setcab202]=useState([])
+  const [cab201,setcab201]=useState([])
+  const [mxb100,setmxb100]=useState([])
+
+  //const []
 
 
+
+  
   const submit=async()=>{
     const requestOptions = {
       method: "POST",
@@ -105,11 +130,43 @@ const Sidebar = () => {
 
   }
 
-  // useEffect(()=>{
-  //   //axios.get
+  const getitem = async(id) =>{
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+    const response = await fetch("http://127.0.0.1:8000/Course/GetCourseItem/"+id, requestOptions)
+    if (!response.ok) {
+      setadditem(false)
+      setsnackmsg("获取课程列表时出现未知错误")
+      setsnackseverity("error")
+      setGBsnack(true);
+    }
+    else{
+      if(response.status===200)
+      {
+        const list=[]
+        response.json().then((CourseItem)=>{
+          console.log(CourseItem)
+          list = CourseItem
+        })
+        return list
+        
+      }
+      
+    }
+  }
+
+  // useEffect(async()=>{
+  //   setcab202(async()=>{ return await getitem("CAB-202")})
+    
   // }
   // ,[])
-  const [open, setOpen] = React.useState(true);
+  const [open0, setOpen0] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
   return (
     <Fragment>
     <List
@@ -119,40 +176,67 @@ const Sidebar = () => {
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
           课程
-          {admin?(<IconButton sx={{left:"80%"}} onClick={()=>{setadditem(true)}}><AddBoxIcon/></IconButton>):(null)}
+          {admin?(<IconButton sx={{left:"82%"}} onClick={()=>{setadditem(true)}}><AddBoxIcon/></IconButton>):(null)}
         </ListSubheader>
         
       }
     >
-      <ListItemButton>
+      <ListItemButton onClick={()=>{
+         setOpen0(!open0)
+        }}>
         <ListItemIcon>
           <PrecisionManufacturingIcon />
         </ListItemIcon>
         <ListItemText primary="CAB-202" secondary="Micro-Controller"/>
+        {open0 ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
+      {/* Collapse open0*/}
+      <Collapse in={open0} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {cab202===[]?(null):(<DisplayItems value={cab202}/>)}
+        </List>
+      </Collapse>
+
       
       {/* */}
-      <ListItemButton>
+      <ListItemButton onClick={()=>setOpen1(!open1)}>
         <ListItemIcon>
           <TerminalIcon />
         </ListItemIcon>
         <ListItemText primary="CAB-201" secondary="Programming Principle"/>
+        {open1 ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-
-      <ListItemButton onClick={()=>setOpen(!open)}>
-        <ListItemIcon>
-          <CalculateIcon />
-        </ListItemIcon>
-        <ListItemText primary="MXB-100" secondary="Introducory Calculus"/>
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      {/* Collapse open1*/}
+      <Collapse in={open1} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
               <PlayLessonIcon />
             </ListItemIcon>
             <ListItemText primary="Week 0 Introducing Rate Of Change"/>
+            <Button>编辑</Button>
+          </ListItemButton>
+        </List>
+      </Collapse>
+      
+
+
+      <ListItemButton onClick={()=>setOpen2(!open2)}>
+        <ListItemIcon>
+          <CalculateIcon />
+        </ListItemIcon>
+        <ListItemText primary="MXB-100" secondary="Introducory Calculus"/>
+        {open2 ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      {/* Collapse open2*/}
+      <Collapse in={open2} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <PlayLessonIcon />
+            </ListItemIcon>
+            <ListItemText primary="Week 0 Introducing Rate Of Change"/>
+            <Button>编辑</Button>
           </ListItemButton>
         </List>
       </Collapse>
