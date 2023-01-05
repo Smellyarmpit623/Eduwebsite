@@ -35,7 +35,8 @@ const UserIconsContainer = styled(Box)(({theme})=>({
 
 const Navbar = () => {
   const [UserMenu, setUserMenu] = useState(false)
-  const [token,settoken]=useContext(UserContext)
+  const {token1,admin1}=useContext(UserContext)
+  const [token,settoken]=token1
   const Logout=()=>{
     settoken(null)
     localStorage.setItem("Token",null)

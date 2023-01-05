@@ -45,7 +45,8 @@ const LoginForm = () => {
   const [RegUser_ID,setRegUserID]=useState("")
   const [RegPassword,setRegPassword]=useState("")
   const [ConfirmPassword,setConfirmPassword]=useState("")
-  const [token,settoken]=useContext(UserContext)
+  const {token1,admin1}=useContext(UserContext)
+  const [token,settoken]=token1
   const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1

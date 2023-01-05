@@ -60,8 +60,9 @@ async def get_user(user:schema.User=fastapi.Depends(get_current_user)):
     return user
 
 
-@app.post("/Course/AddItem",response_model=schema.CourseItem)
+@app.post("/Course/AddItem/",response_model=schema.CourseItem)
 async def Add_Item(Item:schema.CourseItem,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
+    print(user.Title)
     if user.Title in WritePermission:
         await create_md(Item.ItemName)
         return await add_item(item=Item,db_session=db_session)

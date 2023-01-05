@@ -15,7 +15,7 @@ oauth2schema=fastapi.security.OAuth2PasswordBearer(tokenUrl="/User/Login/")
 
 JWT_SECRET="SteveWenJWTScrect"
 def register_user(Register:_schema.Register,db_session=fastapi.Depends(db_model.connection_to_database)):
-    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), datetime.now(), "Non-Paid User")
+    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), datetime.now(), "Student")
     db_session.add(register_user)
     db_session.commit()
     try:
@@ -25,7 +25,7 @@ def register_user(Register:_schema.Register,db_session=fastapi.Depends(db_model.
 
 async def create_token(para_user:db_model.User):
     userobj=_schema.User.from_orm(para_user)
-    userobj.DateExpire=str(userobj.DateExpire)
+    #userobj.DateExpire=str(userobj.DateExpire)
     token=jwt.encode(payload=userobj.dict(),key=JWT_SECRET)
     return dict(access_token=token,token_type="bearer")
 
@@ -33,7 +33,6 @@ async def create_token(para_user:db_model.User):
 async def get_current_user(db_session=fastapi.Depends(db_model.connection_to_database), token:str= fastapi.Depends(oauth2schema)):
     try:
         payload = jwt.decode(token,JWT_SECRET,algorithms=["HS256"])
-        print(payload)
         user= db_session.query(db_model.User).get(payload["User_ID"])
     except:
         raise fastapi.HTTPException(status_code=401,detail="Not authenticated")

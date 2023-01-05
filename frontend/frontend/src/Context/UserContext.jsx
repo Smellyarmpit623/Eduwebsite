@@ -24,13 +24,17 @@ export const UserContextProvider=(props)=>{
                 
               }
               else{
-                const title=response.json().then((User)=>{
-                  console.log(User.Title)
+                const title="";
+                response.json().then((User)=>{
+                  if(User.Title === "Admin" || User.Title === "Teacher Assistant" || User.Title === "Tutor" || User.Title === "Teacher")
+                  {
+                    setAdmin(true)
+                  }
+                  else{
+                    setAdmin(false)
+                  }
                 })
-                if(title==="Admin" || title === "Teacher Assistant" || title==="Tutor" || title === "Teacher")
-                {
-                  setAdmin(true)
-                }
+                
               }
               
               
@@ -40,7 +44,7 @@ export const UserContextProvider=(props)=>{
         fetchuser()
     },[token])
     return(
-        <UserContext.Provider value={[token,settoken]}>
+        <UserContext.Provider value={{token1:[token,settoken],admin1:[Admin]}}>
             {props.children}
         </UserContext.Provider>
     )
