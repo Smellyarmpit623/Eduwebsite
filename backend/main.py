@@ -87,6 +87,12 @@ async def UpdateItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(con
     else:
         raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
 
+@app.get("/User/Auth/")
+async def GetAuth(user:schema.User=fastapi.Depends(get_current_user)):
+    pass
+
+
+
 
 
 

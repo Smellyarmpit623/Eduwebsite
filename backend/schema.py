@@ -7,7 +7,6 @@ from datetime import date, datetime, time, timedelta
 class User(BaseModel):
     User_ID:str
     Password:str
-    DateExpire:datetime
     Title:str
 
     class Config:
@@ -33,5 +32,12 @@ class CourseItemUpdate(BaseModel):
     NewItemName:str
     class Config:
         orm_mode = True
+
+class Membership(BaseModel):
+    CourseID:str
+    DateExpire: datetime
+    class Config:
+        orm_mode=True
+
 
 

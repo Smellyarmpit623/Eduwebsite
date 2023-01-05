@@ -78,3 +78,6 @@ async def itemupdate(db_session,Item:_schema.CourseItemUpdate):
     except:
         pass
 
+async def auth(user:_schema.User=fastapi.Depends(get_current_user)):
+    pass
+

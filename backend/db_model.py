@@ -13,7 +13,6 @@ class User(Base):
     __tablename__ = "User"
     User_ID=Column("User_ID",String,primary_key=True)
     Password=Column("Password",String)
-    DateExpire=Column("DateExpire",DateTime,nullable=False)
     Title=Column("Title",String,nullable=False)
 
     def __init__(self, User_ID, Password, DateExpire, Title):
@@ -32,10 +31,16 @@ class Course(Base):
         self.CourseID=CourseID
         self.ItemName=ItemName
 
+class Membership(Base):
+    __tablename__ = "Membership"
+    MembershipID = Column("MembershipID", Integer,primary_key=True)
+    CourseID = Column("CourseID", String)
+    DateExpire = Column("DateExpire", DateTime, nullable=False)
+
 
 def connection_to_database():
     engine=create_engine("sqlite:///DB.db",echo=True)
-    #Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
     Session=sessionmaker(autocommit=False, autoflush=False, bind=engine)
     try:
         session=Session()
