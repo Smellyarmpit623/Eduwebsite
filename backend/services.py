@@ -90,4 +90,8 @@ async def membership_init(CID,db_session,user:_schema.User):
         pass
 
 
-async def itemcontent
+async def itemcontent(CID,Itemname):
+    f = open("./mds/" + CID + "/" + Itemname + ".md", "r")
+    content=f.read()
+    f.close()
+    return content

@@ -99,7 +99,7 @@ async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depen
             await membership_init(CID=Course_ID,db_session=db_session,user=user)
             raise fastapi.HTTPException(status_code=403,detail="Membership does not exist")
         elif result.DateExpire>datetime.now():
-
+            return {"Path":"../../backend/mds/" + Course_ID + "/" + ItemName + ".md"}
         else:
             raise fastapi.HTTPException(status_code=403, detail="Membership has expired")
 
