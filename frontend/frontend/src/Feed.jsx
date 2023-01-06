@@ -41,7 +41,7 @@ const Feed = () => {
           },
           
         }
-        const response= await fetch("http://127.0.0.1:8000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+        const response = await fetch("http://127.0.0.1:8000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
         if(!response.ok)
         {
           if(response.status===403)
@@ -65,8 +65,16 @@ const Feed = () => {
           setmd("")
         }
         else{
-          const mdcontent=response.json()
-          setmd(mdcontent)
+          if(response.status===200)
+          {
+            response.json().then((value)=>{
+              console.log(value)
+              setmd(value)
+            })
+            
+            
+            
+          }
         }
       }
     }

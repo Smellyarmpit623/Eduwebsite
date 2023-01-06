@@ -110,7 +110,7 @@ async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depen
     else:
         result = db_session.query(Course).filter(Course_ID == Course.CourseID, ItemName == Course.ItemName).first()
         if type(result) == Course:
-            return {"Path": "../../../backend/mds/" + Course_ID + "/" + ItemName + ".md"}
+            return await itemcontent(Course_ID,ItemName)
         else:
             raise fastapi.HTTPException(status_code=404, detail="Course Item not found")
 
