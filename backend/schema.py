@@ -39,5 +39,11 @@ class Membership(BaseModel):
     class Config:
         orm_mode=True
 
+class Content(BaseModel):
+    Content:str
+
+    class Config:
+        orm_mode = True
+
 
 

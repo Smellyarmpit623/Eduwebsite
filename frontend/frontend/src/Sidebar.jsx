@@ -34,6 +34,7 @@ import Draggable from 'react-draggable';
 import TextField from '@mui/material/TextField';
 import PublishIcon from '@mui/icons-material/Publish';
 import { SnackContext } from './Context/Snackbar';
+import { FeedContext } from './Context/FeedContext';
 
 
 
@@ -49,8 +50,16 @@ function PaperComponent(props) {
 }
 
 function Course_Item(props){
+  const {mdCID1,mdItemName1} = useContext(FeedContext)
+  const [mdCID,setmdCID]=mdCID1
+  const [mdItemName,setmdItemName]=mdItemName1
+
+  const handleclick=()=>{
+    setmdCID(props.value.CourseID)
+    setmdItemName(props.value.ItemName)
+  }
   return(
-      <ListItemButton sx={{ pl: 4 }}>
+      <ListItemButton sx={{ pl: 4 }} onClick={handleclick}>
         <ListItemIcon>
           <PlayLessonIcon />
         </ListItemIcon>
@@ -87,6 +96,7 @@ const Sidebar = () => {
   const [cab202,setcab202]=useState([])
   const [cab201,setcab201]=useState([])
   const [mxb100,setmxb100]=useState([])
+  
 
   //const []
 
@@ -107,12 +117,12 @@ const Sidebar = () => {
     }
     const response = await fetch("http://127.0.0.1:8000/Course/AddItem/", requestOptions)
       if (!response.ok) {
-        if(response.status===401)
+        if(response.status===403)
         {
           setadditem(false)
           setsnackmsg("没有足够的权限")
           setsnackseverity("error")
-          setGBsnack(true);
+          setGBsnack(true); 
         }
         else
         {

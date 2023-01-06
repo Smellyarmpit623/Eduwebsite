@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import { Box, Container, Typography,Stack, Paper} from '@mui/material';
 import { useEffect } from 'react';
 import nigga from './nigga.txt'
@@ -9,6 +9,9 @@ import Termernology from './MDcomponent/Termernology.jsx';
 import Markdown from "markdown-to-jsx"
 import Htmlblock from './MDcomponent/Htmlblock';
 import { Html } from '@mui/icons-material';
+import { UserContext } from './Context/UserContext';
+import { FeedContext } from './Context/FeedContext';
+import { SnackContext } from './Context/Snackbar';
 
 
 
@@ -16,13 +19,61 @@ import { Html } from '@mui/icons-material';
 
 const Feed = () => {
   const [md,setmd] = useState(``)
+  const {token1,admin1}=useContext(UserContext)
+  const [token,settoken]=token1
+  const {mdCID1,mdItemName1} = useContext(FeedContext)
+  const [mdCID,setmdCID]=mdCID1
+  const [mdItemName,setmdItemName]=mdItemName1
+  const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+  const [GBsnack,setGBsnack]=GBsnack1
+  const [snackmsg,setsnackmsg]=snackmsg1
+  const [snackseverity,setsnackseverity]=snackseverity1
+
   useEffect(() => {
-    fetch(nigga)
-    .then(r => r.text())
-    .then(text => {
-      setmd(text)
-    });
-  });
+    const updatemd=async()=>{
+      if(mdCID!=="" || mdItemName !== "")
+      {
+        const requestoptions={
+          method:"GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          
+        }
+        const response= await fetch("http://127.0.0.1:8000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+        if(!response.ok)
+        {
+          if(response.status===403)
+          {
+            setsnackmsg("课程 "+mdCID+" 学习时间已到期，请和管理员联系")
+            setsnackseverity("warning")
+            setGBsnack(true);
+          }
+          if(response.status===404)
+          {
+            setsnackmsg("笔记内容找不到了 :(")
+            setsnackseverity("error")
+            setGBsnack(true);
+          }
+          if(response.status===402)
+          {
+            setsnackmsg("欢迎加入课程 "+mdCID+",当前还不能查看任何资源哦，请联系管理员")
+            setsnackseverity("info")
+            setGBsnack(true);
+          }
+          setmd("")
+        }
+        else{
+          const mdcontent=response.json()
+          setmd(mdcontent)
+        }
+      }
+    }
+    updatemd()
+
+  },[mdItemName,mdCID]);
+
   return (
     <Box sx={{
       fontSize:"20px",

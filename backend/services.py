@@ -6,6 +6,7 @@ from datetime import datetime
 import passlib.hash
 import os
 import jwt
+import io
 import json
 import fastapi.security
 from sqlalchemy import *
@@ -91,7 +92,7 @@ async def membership_init(CID,db_session,user:_schema.User):
 
 
 async def itemcontent(CID,Itemname):
-    f = open("./mds/" + CID + "/" + Itemname + ".md", "r")
+    f = io.open(file="./mds/" + CID + "/" + Itemname + ".md", mode="br+")
     content=f.read()
     f.close()
     return content

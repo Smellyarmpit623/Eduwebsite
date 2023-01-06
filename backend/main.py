@@ -70,18 +70,18 @@ async def Add_Item(Item:schema.CourseItem,db_session=fastapi.Depends(connection_
         else:
             raise fastapi.HTTPException(status_code=404,detail="Course not found")
     else:
-        raise fastapi.HTTPException(status_code=401,detail="Not authenticated")
+        raise fastapi.HTTPException(status_code=403,detail="Not a teacher or an Admin")
 
 
 @app.delete("/Course/DeleteItem")
 async def DeleteItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
-    if user.Title in WritePermission:
+    if user.Title == 'Admin':
         item=await itemselector(Item=Item,db_session=db_session)
         db_session.delete(item)
         db_session.commit()
         return {"Msg":"Item has been deleted"}
     else:
-        raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
+        raise fastapi.HTTPException(status_code=403, detail="Not an Admin")
 
 @app.put("/Course/UpdateItem")
 async def UpdateItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
@@ -89,7 +89,7 @@ async def UpdateItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(con
         await itemupdate(Item=Item,db_session=db_session)
         return {"Msg":"Item has been Updated"}
     else:
-        raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
+        raise fastapi.HTTPException(status_code=403, detail="Not a teacher or an Admin")
 
 @app.get("/Course/GetContent/{Course_ID}/{ItemName}")
 async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
@@ -97,11 +97,11 @@ async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depen
         result = db_session.query(Membership).filter(user.User_ID == Membership.User_ID,Course_ID==Membership.CourseID).first()
         if type(result) != Membership:
             await membership_init(CID=Course_ID,db_session=db_session,user=user)
-            raise fastapi.HTTPException(status_code=403,detail="Membership does not exist")
+            raise fastapi.HTTPException(status_code=402,detail="Membership does not exist")
         elif result.DateExpire>datetime.now():
             result = db_session.query(Course).filter(Course_ID==Course.CourseID,ItemName == Course.ItemName).first()
             if type(result)==Course:
-                return {"Path":"../../backend/mds/" + Course_ID + "/" + ItemName + ".md"}
+                return await itemcontent(Course_ID,ItemName)
             else:
                 raise fastapi.HTTPException(status_code=404,detail="Course Item not found")
         else:
@@ -110,7 +110,7 @@ async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depen
     else:
         result = db_session.query(Course).filter(Course_ID == Course.CourseID, ItemName == Course.ItemName).first()
         if type(result) == Course:
-            return {"Path": "../../backend/mds/" + Course_ID + "/" + ItemName + ".md"}
+            return {"Path": "../../../backend/mds/" + Course_ID + "/" + ItemName + ".md"}
         else:
             raise fastapi.HTTPException(status_code=404, detail="Course Item not found")
 

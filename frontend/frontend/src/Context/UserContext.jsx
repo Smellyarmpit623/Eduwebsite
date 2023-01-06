@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Token } from '@mui/icons-material';
+import { SnackContext } from './Snackbar';
 
 
 export const UserContext = createContext();
@@ -8,6 +9,10 @@ export const UserContext = createContext();
 export const UserContextProvider=(props)=>{
     const [token,settoken]=useState(localStorage.getItem("Token"))
     const [Admin,setAdmin] = useState(false)
+    const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+    const [GBsnack,setGBsnack]=GBsnack1
+    const [snackmsg,setsnackmsg]=snackmsg1
+    const [snackseverity,setsnackseverity]=snackseverity1
     useEffect(()=>{
         const fetchuser=async()=>{
             const requestOptions = {
@@ -32,6 +37,9 @@ export const UserContextProvider=(props)=>{
                   else{
                     setAdmin(false)
                   }
+                  setsnackmsg("欢迎回来 "+User.User_ID)
+                  setsnackseverity("success")
+                  setGBsnack(true);
                 })
                 
               }

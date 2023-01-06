@@ -14,6 +14,7 @@ import { AuthProvider } from 'react-auth-kit';
 import { UserContextProvider } from './Context/UserContext';
 import { SnackbarContextProvider, SnackContext } from './Context/Snackbar';
 import { GlobalSnackbar } from './Snackbar';
+import { FeedContextProvider } from './Context/FeedContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -24,8 +25,9 @@ const darkTheme = createTheme({
 function App() {
   
   return (
-    <UserContextProvider>
     <SnackbarContextProvider>
+    <UserContextProvider>
+    <FeedContextProvider>
     <GlobalSnackbar/>
     <ThemeProvider theme={darkTheme}>
       
@@ -45,8 +47,9 @@ function App() {
       </Grid>
     </Box>
     </ThemeProvider>
-    </SnackbarContextProvider>
+    </FeedContextProvider>
     </UserContextProvider>
+    </SnackbarContextProvider>
   );
 }
 
