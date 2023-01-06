@@ -51,6 +51,7 @@ const Termernology = ({children}) => {
             <b style={{
                 backgroundColor:"#3e3f40",
                 borderRadius:"7px",
+                color:"#91caf9"
             }}>
                 <a onClick={HandleOpen}>{children}</a>
                 <Dialog

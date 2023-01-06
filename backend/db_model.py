@@ -15,10 +15,9 @@ class User(Base):
     Password=Column("Password",String)
     Title=Column("Title",String,nullable=False)
 
-    def __init__(self, User_ID, Password, DateExpire, Title):
+    def __init__(self, User_ID, Password, Title):
         self.User_ID=User_ID
         self.Password=Password
-        self.DateExpire=DateExpire
         self.Title=Title
 
 class Course(Base):
@@ -34,8 +33,15 @@ class Course(Base):
 class Membership(Base):
     __tablename__ = "Membership"
     MembershipID = Column("MembershipID", Integer,primary_key=True)
+    User_ID = Column("User_ID", String)
     CourseID = Column("CourseID", String)
     DateExpire = Column("DateExpire", DateTime, nullable=False)
+
+    def __init__(self, User_ID, CourseID, DateExpire):
+        self.MembershipID=None
+        self.User_ID=User_ID
+        self.CourseID=CourseID
+        self.DateExpire=DateExpire
 
 
 def connection_to_database():

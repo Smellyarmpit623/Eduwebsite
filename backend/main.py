@@ -24,6 +24,7 @@ app.add_middleware(
 )
 
 WritePermission=['Admin','Teacher Assistant','Tutor','Teacher']
+CourseList=['CAB-201','CAB-202','MXB-100']
 
 @app.get("/")
 async def read_root():
@@ -62,10 +63,12 @@ async def get_user(user:schema.User=fastapi.Depends(get_current_user)):
 
 @app.post("/Course/AddItem/",response_model=schema.CourseItem)
 async def Add_Item(Item:schema.CourseItem,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
-    print(user.Title)
     if user.Title in WritePermission:
-        await create_md(Item.ItemName)
-        return await add_item(item=Item,db_session=db_session)
+        if Item.CourseID in CourseList:
+            await create_md(Item.ItemName,Item.CourseID)
+            return await add_item(item=Item,db_session=db_session)
+        else:
+            raise fastapi.HTTPException(status_code=404,detail="Course not found")
     else:
         raise fastapi.HTTPException(status_code=401,detail="Not authenticated")
 
@@ -88,9 +91,22 @@ async def UpdateItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(con
     else:
         raise fastapi.HTTPException(status_code=401, detail="Not authenticated")
 
-@app.get("/User/Auth/")
-async def GetAuth(user:schema.User=fastapi.Depends(get_current_user)):
-    pass
+@app.get("/Course/GetContent/{Course_ID}/{ItemName}")
+async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title not in WritePermission:
+        result = db_session.query(Membership).filter(user.User_ID == Membership.User_ID,Course_ID==Membership.CourseID).first()
+        if type(result) != Membership:
+            await membership_init(CID=Course_ID,db_session=db_session,user=user)
+            raise fastapi.HTTPException(status_code=403,detail="Membership does not exist")
+        elif result.DateExpire>datetime.now():
+
+        else:
+            raise fastapi.HTTPException(status_code=403, detail="Membership has expired")
+
+
+
+
+
 
 
 

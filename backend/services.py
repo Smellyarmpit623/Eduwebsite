@@ -15,7 +15,7 @@ oauth2schema=fastapi.security.OAuth2PasswordBearer(tokenUrl="/User/Login/")
 
 JWT_SECRET="SteveWenJWTScrect"
 def register_user(Register:_schema.Register,db_session=fastapi.Depends(db_model.connection_to_database)):
-    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), datetime.now(), "Student")
+    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), "Student")
     db_session.add(register_user)
     db_session.commit()
     try:
@@ -49,8 +49,8 @@ async def add_item(db_session, item:_schema.CourseItem):
         pass
     return _schema.CourseItem.from_orm(Item)
 
-async def create_md(mdname):
-    f = open("./mds/"+mdname + ".md", "a")
+async def create_md(mdname,cid):
+    f = open("./mds/"+cid+"/"+mdname + ".md", "a")
     f.close()
 
 
@@ -77,6 +77,17 @@ async def itemupdate(db_session,Item:_schema.CourseItemUpdate):
     except:
         pass
 
-async def auth(user:_schema.User=fastapi.Depends(get_current_user)):
-    pass
+async def membership_init(CID,db_session,user:_schema.User):
+    new_membership=db_model.Membership(User_ID=user.User_ID,CourseID=CID,DateExpire=datetime.now())
+    try:
+        db_session.add(new_membership)
+        db_session.commit()
+    except:
+        fastapi.HTTPException(status_code=404,detail="Unknown error when creating membership record")
+    try:
+        db_session.refresh(db_model.Course)
+    except:
+        pass
 
+
+async def itemcontent

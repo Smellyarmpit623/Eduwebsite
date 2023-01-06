@@ -48,22 +48,27 @@ function PaperComponent(props) {
   );
 }
 
-function CourseItem(props){
+function Course_Item(props){
   return(
       <ListItemButton sx={{ pl: 4 }}>
         <ListItemIcon>
           <PlayLessonIcon />
         </ListItemIcon>
-        <ListItemText primary={props.ItemName}/>
-        <Button>编辑</Button>
+        <ListItemText primary={props.value.ItemName}/>
       </ListItemButton>
   )
 }
 
-function DisplayItems(Item_list){
-  console.log("123"+Item_list)
-  Item_list.map((item)=>
-    <CourseItem value={item}/>
+function DisplayItems(props){
+  const Item_list=(props.value)
+  const Display=Item_list.map((value)=>
+    <Course_Item value={value}/>
+  );
+
+  return(
+    <Fragment>
+      {Display}
+    </Fragment>
   )
 }
 
@@ -111,10 +116,20 @@ const Sidebar = () => {
         }
         else
         {
-        setadditem(false)
-        setsnackmsg("未知错误")
-        setsnackseverity("error")
-        setGBsnack(true);
+          if(response.status===404)
+          {
+            setadditem(false)
+            setsnackmsg("课程ID不存在")
+            setsnackseverity("error")
+            setGBsnack(true);
+          }
+          else{
+            setadditem(false)
+            setsnackmsg("未知错误")
+            setsnackseverity("error")
+            setGBsnack(true);
+          }
+          
         }
       }
       else{
@@ -137,33 +152,27 @@ const Sidebar = () => {
         "Content-Type": "application/json",
       },
     }
-    const response = await fetch("http://127.0.0.1:8000/Course/GetCourseItem/"+id, requestOptions)
-    if (!response.ok) {
-      setadditem(false)
-      setsnackmsg("获取课程列表时出现未知错误")
-      setsnackseverity("error")
-      setGBsnack(true);
-    }
-    else{
-      if(response.status===200)
-      {
-        const list=[]
-        response.json().then((CourseItem)=>{
-          console.log(CourseItem)
-          list = CourseItem
-        })
-        return list
-        
+    return await fetch("http://127.0.0.1:8000/Course/GetCourseItem/"+id, requestOptions)
+    .then((response)=>response.json())
+    .catch(()=>{
+          setsnackmsg("获取课程列表时出现未知错误")
+          setsnackseverity("error")
+          setGBsnack(true);
       }
-      
-    }
+    )
+    
   }
 
-  // useEffect(async()=>{
-  //   setcab202(async()=>{ return await getitem("CAB-202")})
-    
-  // }
-  // ,[])
+  useEffect(()=>{
+    async function get(id){
+      return await getitem(id)
+    }
+    get("CAB-201").then((res)=>setcab201(res))
+    get("CAB-202").then((res)=>setcab202(res))
+    get("MXB-100").then((res)=>setmxb100(res))
+
+  }
+  ,[])
   const [open0, setOpen0] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -193,7 +202,7 @@ const Sidebar = () => {
       {/* Collapse open0*/}
       <Collapse in={open0} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {cab202===[]?(null):(<DisplayItems value={cab202}/>)}
+          {cab202.length===0?(null):(<DisplayItems value={cab202}/>)}
         </List>
       </Collapse>
 
@@ -209,13 +218,8 @@ const Sidebar = () => {
       {/* Collapse open1*/}
       <Collapse in={open1} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PlayLessonIcon />
-            </ListItemIcon>
-            <ListItemText primary="Week 0 Introducing Rate Of Change"/>
-            <Button>编辑</Button>
-          </ListItemButton>
+          {cab201.length===0?(null):(<DisplayItems value={cab201}/>)}
+
         </List>
       </Collapse>
       
@@ -231,13 +235,8 @@ const Sidebar = () => {
       {/* Collapse open2*/}
       <Collapse in={open2} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PlayLessonIcon />
-            </ListItemIcon>
-            <ListItemText primary="Week 0 Introducing Rate Of Change"/>
-            <Button>编辑</Button>
-          </ListItemButton>
+          {mxb100.length===0?(null):(<DisplayItems value={mxb100}/>)}
+
         </List>
       </Collapse>
     </List>
