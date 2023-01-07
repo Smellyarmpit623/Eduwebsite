@@ -25,9 +25,7 @@ const darkTheme = createTheme({
 function App() {
   
   return (
-    <SnackbarContextProvider>
-    <UserContextProvider>
-    <FeedContextProvider>
+    <>
     <GlobalSnackbar/>
     <ThemeProvider theme={darkTheme}>
       
@@ -41,15 +39,13 @@ function App() {
       <Grid item xs={7}>
         <Feed/>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={2} >
         <Rightbar/>
       </Grid>
       </Grid>
     </Box>
     </ThemeProvider>
-    </FeedContextProvider>
-    </UserContextProvider>
-    </SnackbarContextProvider>
+    </>
   );
 }
 

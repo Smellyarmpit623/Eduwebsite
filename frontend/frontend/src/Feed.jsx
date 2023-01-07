@@ -18,11 +18,12 @@ import { SnackContext } from './Context/Snackbar';
 
 
 const Feed = () => {
-  const [md,setmd] = useState(``)
+  
   const {token1,admin1}=useContext(UserContext)
   const [token,settoken]=token1
-  const {mdCID1,mdItemName1} = useContext(FeedContext)
+  const {mdCID1,mdItemName1,md1} = useContext(FeedContext)
   const [mdCID,setmdCID]=mdCID1
+  const [md,setmd] = md1
   const [mdItemName,setmdItemName]=mdItemName1
   const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
   const [GBsnack,setGBsnack]=GBsnack1
@@ -31,7 +32,7 @@ const Feed = () => {
 
   useEffect(() => {
     const updatemd=async()=>{
-      if(mdCID!=="" || mdItemName !== "")
+      if(mdCID!=="" && mdItemName !== "" && mdCID!==undefined &&mdItemName!==undefined)
       {
         const requestoptions={
           method:"GET",
@@ -68,7 +69,6 @@ const Feed = () => {
           if(response.status===200)
           {
             response.json().then((value)=>{
-              console.log(value)
               setmd(value)
             })
             
