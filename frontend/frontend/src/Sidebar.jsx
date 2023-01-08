@@ -35,6 +35,7 @@ import TextField from '@mui/material/TextField';
 import PublishIcon from '@mui/icons-material/Publish';
 import { SnackContext } from './Context/Snackbar';
 import { FeedContext } from './Context/FeedContext';
+import { ElectricBikeSharp } from '@mui/icons-material';
 
 
 
@@ -53,10 +54,25 @@ function Course_Item(props){
   const {mdCID1,mdItemName1} = useContext(FeedContext)
   const [mdCID,setmdCID]=mdCID1
   const [mdItemName,setmdItemName]=mdItemName1
+  const {token1,admin1}=useContext(UserContext)
+  const [token,settoken]=token1
+  const [admin]=admin1
+  const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+  const [GBsnack,setGBsnack]=GBsnack1
+  const [snackmsg,setsnackmsg]=snackmsg1
+  const [snackseverity,setsnackseverity]=snackseverity1
 
   const handleclick=()=>{
-    setmdCID(props.value.CourseID)
-    setmdItemName(props.value.ItemName)
+    if(token)
+    {
+      setmdCID(props.value.CourseID)
+      setmdItemName(props.value.ItemName)
+    }
+    else{
+      setsnackmsg("请先登录噢")
+      setsnackseverity("info")
+      setGBsnack(true);
+    }
   }
   return(
       <ListItemButton sx={{ pl: 4 }} onClick={handleclick}>
