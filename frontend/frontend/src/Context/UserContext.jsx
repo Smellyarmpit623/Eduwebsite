@@ -51,7 +51,7 @@ export const UserContextProvider=(props)=>{
         fetchuser()
     },[token])
     return(
-        <UserContext.Provider value={{token1:[token,settoken],admin1:[Admin]}}>
+        <UserContext.Provider value={{token1:[token,settoken],admin1:[Admin,setAdmin]}}>
             {props.children}
         </UserContext.Provider>
     )

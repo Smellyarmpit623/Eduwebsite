@@ -4,6 +4,7 @@ import { Mail , Notifications, Token} from '@mui/icons-material';
 import { useState } from 'react';
 import { UserContext } from './Context/UserContext';
 import LoginForm from './LoginRegisterForm';
+import { SnackContext } from './Context/Snackbar';
 
 const StyledToolbar = styled(Toolbar)({
   display:"flex",
@@ -37,10 +38,19 @@ const Navbar = () => {
   const [UserMenu, setUserMenu] = useState(false)
   const {token1,admin1}=useContext(UserContext)
   const [token,settoken]=token1
+  const [Admin,setAdmin]=admin1
+  const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+  const [GBsnack,setGBsnack]=GBsnack1
+  const [snackmsg,setsnackmsg]=snackmsg1
+  const [snackseverity,setsnackseverity]=snackseverity1
   const Logout=()=>{
     settoken(null)
     localStorage.setItem("Token",null)
+    setAdmin(false)
     setUserMenu(false)
+    setsnackmsg("成功登出")
+    setsnackseverity("success")
+    setGBsnack(true);
   }
   return (
     <AppBar position='sticky'> 
