@@ -13,6 +13,7 @@ import Feed from './Feed';
 import { useContext, useEffect } from 'react';
 import { ETextarea } from './EditorComponent/Etextarea';
 import { useParams } from 'react-router-dom';
+import { MDToolbar } from './EditorComponent/MDToolbar';
 
 
 const darkTheme = createTheme({
@@ -36,7 +37,7 @@ function MDEditor() {
       <Navbar/>
       <Grid container spacing={2}>
       <Grid item xs={2}>
-      
+        <MDToolbar/>
       </Grid>
       <Grid item xs={4}>
             <ETextarea cid={CID} itn={ItemName}/>

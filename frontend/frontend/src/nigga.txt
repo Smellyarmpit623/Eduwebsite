@@ -35,11 +35,29 @@ Here is an example of a plugin to highlight code:
 
 ![MarineGEO circle logo](https://www.mghpcc.org/wp-content/uploads/2021/02/Ep3t7KqVgAEQSGI-680x383-1.jpg "MarineGEO logo")
 
+
+
+<Button variant="outlined" color="neutral" onClick={()=>{setmd(md+`<YTPlayer opts = {
+                  height: '390',//高度
+                  width: '640',//宽度
+                  playerVars: {
+                    autoplay: 0,
+                  },}
+                  videoId="视频ID"/>`)}}>
+                  +YoutubePlayer
+                </Button>
+                <Button variant="outlined" color="neutral" onClick={()=>{setmd(md+"<Pedia>名词</Pedia>")}}>
+                  +CodeBlock
+                </Button>
+                <Button variant="outlined" color="neutral" onClick={()=>{setmd(md+"<Pedia>名词</Pedia>")}}>
+                  +Latex
+                </Button>
+
 <YTPlayer opts = {
       height: '390',
       width: '640',
        playerVars: {
-        // https://developers.google.com/youtube/player_parameters
+                  // https://developers.google.com/youtube/player_parameters
         autoplay: 0,
       },}
       videoId="zV-jDJx6XjI"/>
@@ -52,6 +70,27 @@ import rehypeHighlight from 'rehype-highlight'
 
 ReactDOM.render(
 )
+</Code>
+
+<Code language="python">
+async def itemupdate(db_session,Item:_schema.CourseItemUpdate):
+    item=db_session.query(db_model.Course).filter(db_model.Course.ItemName==Item.ItemName).first()
+    if item is None:
+        raise fastapi.HTTPException(status_code=404, detail="Item does not exist")
+    oldfilepath="./mds/"+ item.ItemName +".md"
+    f = open(oldfilepath, "w")
+    f.write(Item.MarkdownUpdate)
+    f.close()
+    newfilepath="./mds/"+ Item.NewItemName +".md"
+    os.rename(oldfilepath,newfilepath)
+    item.ItemName=Item.NewItemName
+    db_session.commit()
+    try:
+        db_session.refresh(db_model.Course)
+    except:
+        pass
+
+
 </Code>
 
 <Code language="javascript">

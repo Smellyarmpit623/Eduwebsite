@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
@@ -14,9 +14,27 @@ import { Box } from '@mui/system';
 
 const Code = ({ children, language }) => {
   const [copied, setCopied] = useState(false);
-
-
   const [Copiednotif, setCopiednotif] = useState(false);
+
+  function Highlight(){
+    try{
+      return(
+      <SyntaxHighlighter
+          
+          language={language}
+          style={materialDark}
+        >
+  
+          {children}
+          
+        </SyntaxHighlighter>)
+    }
+    catch(e)
+    {
+      console.log(e)
+    }
+    
+  }
 
   const handleClick = () => {
     setCopiednotif(true);
@@ -64,15 +82,7 @@ const Code = ({ children, language }) => {
         </Alert>
       </Snackbar>
       <Box sx={{width:"80%"}}>
-      <SyntaxHighlighter
-        
-        language={language}
-        style={materialDark}
-      >
-
-        {children}
-        
-      </SyntaxHighlighter>
+        <Highlight/>
       </Box>
     </div>
   )

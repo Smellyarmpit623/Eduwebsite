@@ -23,7 +23,7 @@ const Rightbar = () => {
   const [snackseverity,setsnackseverity]=snackseverity1
   return (
     <Box>
-      {admin?(<Fragment>
+      {admin && mdCID!=="" && mdItemName!==""?(<Fragment>
         <Link to={`/editor/${mdCID}/${mdItemName}`}><Fab color="secondary" aria-label="edit" variant='extended' sx={{
         margin:"8px"
       }}>

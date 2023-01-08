@@ -35,11 +35,13 @@ Here is an example of a plugin to highlight code:
 
 ![MarineGEO circle logo](https://www.mghpcc.org/wp-content/uploads/2021/02/Ep3t7KqVgAEQSGI-680x383-1.jpg "MarineGEO logo")
 
+
+
 <YTPlayer opts = {
       height: '390',
       width: '640',
        playerVars: {
-        // https://developers.google.com/youtube/player_parameters
+                  // https://developers.google.com/youtube/player_parameters
         autoplay: 0,
       },}
       videoId="zV-jDJx6XjI"/>
@@ -52,6 +54,11 @@ import rehypeHighlight from 'rehype-highlight'
 
 ReactDOM.render(
 )
+</Code>
+
+<Code language="c">
+  #include <stdio.h>
+
 </Code>
 
 <Code language="javascript">
