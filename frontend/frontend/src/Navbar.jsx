@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { UserContext } from './Context/UserContext';
 import LoginForm from './LoginRegisterForm';
 import { SnackContext } from './Context/Snackbar';
+import { Link } from 'react-router-dom';
 
 const StyledToolbar = styled(Toolbar)({
   display:"flex",

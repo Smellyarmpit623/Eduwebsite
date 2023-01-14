@@ -6,12 +6,19 @@ import Code from './MDcomponent/CodeBlock';
 import { YTPlayer } from './MDcomponent/YoutubePlayer';
 import { LatexComponent } from './MDcomponent/Latex';
 import Termernology from './MDcomponent/Termernology.jsx';
-import Markdown from "markdown-to-jsx"
 import Htmlblock from './MDcomponent/Htmlblock';
 import { Html } from '@mui/icons-material';
 import { UserContext } from './Context/UserContext';
 import { FeedContext } from './Context/FeedContext';
+import ReactMarkdown from 'react-markdown'
 import { SnackContext } from './Context/Snackbar';
+import 'katex/dist/katex.min.css'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+import {coldarkDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
+import remarkGfm from 'remark-gfm'
+
 
 
 
@@ -86,29 +93,38 @@ const Feed = () => {
     <Box sx={{
       fontSize:"20px",
     }}>
-    <Paper elevation={0}>
-     <Markdown 
-     options={{
-            overrides: {
-              Code: {
-                component: Code
-              },
-              YTPlayer: {
-                component: YTPlayer
-              },
-              Latex:{
-                component: LatexComponent
-              },
-              Pedia:{
-                component: Termernology
-              },
-              Html:{
-                component: Htmlblock
-              },
-            }
-          }}>
-            {md}
-      </Markdown>
+      <Paper elevation={0}>
+        <ReactMarkdown children={md} remarkPlugins={[remarkMath,remarkGfm]} rehypePlugins={[rehypeKatex]}
+         components={{
+          code({node, inline, className, children, ...props}) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={coldarkDark}
+                language={match[1]}
+                PreTag="div"
+                showLineNumbers={true}
+                wrapLongLines={true}
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                <Termernology>
+                  {children}
+                </Termernology>
+              </code>
+            )
+          },
+          a({title,href,children,...props})
+          {
+              return(
+                <YTPlayer videoId={children}/>
+              )
+          }
+        }}
+        
+        />
       </Paper>
     </Box>
   )

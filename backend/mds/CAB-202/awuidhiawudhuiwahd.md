@@ -56,8 +56,8 @@ ReactDOM.render(
 )
 </Code>
 
-<Code language="c">
-  #include <stdio.h>
+<Code language="c" >
+  #include -[stdio.h]-
 
 </Code>
 

@@ -15,6 +15,7 @@ import { Box } from '@mui/system';
 const Code = ({ children, language }) => {
   const [copied, setCopied] = useState(false);
   const [Copiednotif, setCopiednotif] = useState(false);
+  const [content,setcontent]=useState("")
 
   function Highlight(){
     try{
@@ -25,7 +26,7 @@ const Code = ({ children, language }) => {
           style={materialDark}
         >
   
-          {children}
+          {content}
           
         </SyntaxHighlighter>)
     }
@@ -44,6 +45,25 @@ const Code = ({ children, language }) => {
     setCopiednotif(false);
   };
 
+  useEffect(()=>{
+    try{
+      const string = children[0]
+      console.log(typeof string)
+      console.log(string)
+      if(typeof string === "string")
+      {
+        setcontent(string.replace("-[","<"))
+        console.log(content)
+        setcontent(string.replace("]-",">"))
+        console.log(content)
+      }
+      console.log(content)
+    }
+    catch(e){
+
+    }
+    
+  },[])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,7 +77,7 @@ const Code = ({ children, language }) => {
     <div className="codeblocks" style={{
       position: "relative"
     }}>
-      <CopyToClipboard text={children} onCopy={() => setCopied(true)}>
+      <CopyToClipboard text={content} onCopy={() => setCopied(true)}>
         <IconButton onClick={handleClick} style={{
           position: "absolute",
           top: "1rem",

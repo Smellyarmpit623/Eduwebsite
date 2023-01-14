@@ -82,23 +82,7 @@ export const ETextarea = (props) => {
             <Textarea label="Soft" placeholder="Type in here…" variant="outlined" value={md} color="success" onChange={(event)=>setmd(event.target.value)}
             startDecorator={
               <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <Button variant="outlined" color="neutral" onClick={()=>{setmd(md+`
-<Pedia>名词</Pedia>`)}}>
-                  +名词
-                </Button>
-                <Button variant="outlined" color="neutral" onClick={()=>{setmd(md+`
-<YTPlayer opts = {height: '390', width: '640', playerVars: {autoplay: 0,},} videoId="视频ID"/>`)}}>
-                  +YoutubePlayer
-                </Button>
-                <Button variant="outlined" color="neutral" onClick={()=>{setmd(md+`
-<Code language="">
-/*Insert Code here*/
-</Code>`)}}>
-                  +CodeBlock
-                </Button>
-                <Button variant="outlined" color="neutral" onClick={setmd(md+"")}>
-                  +Latex
-                </Button>
+                
               </Box>
             }
             sx={{
