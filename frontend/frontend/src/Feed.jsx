@@ -49,7 +49,7 @@ const Feed = () => {
           },
           
         }
-        const response = await fetch("http://127.0.0.1:8000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+        const response = await fetch("http://120.79.159.198:5000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
         if(!response.ok)
         {
           if(response.status===403)
