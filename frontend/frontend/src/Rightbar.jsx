@@ -38,6 +38,7 @@ const Rightbar = () => {
   const [snackseverity,setsnackseverity]=snackseverity1
   const navigate = useNavigate();
   const [delete1,setdelete] = useState(false)
+  const [suc,setsuc]=useState(false)
 
   const handledelete = () => {
     const requestOptions = {
@@ -64,11 +65,8 @@ const Rightbar = () => {
         else{
           if(response.Msg==="Item has been deleted")
           {
-            navigate(0)
-            setsnackmsg("删除成功!")
-            setsnackseverity("success")
-            setGBsnack(true);
             setdelete(false)
+            setsuc(true)
           }
         }
       })
@@ -97,6 +95,7 @@ const Rightbar = () => {
       maxWidth={'sm'}
       onClose={()=>{
         setdelete(false)
+        navigate(0)
       }}
       PaperComponent={PaperComponent}
       aria-labelledby="draggable-dialog-title"
@@ -117,6 +116,40 @@ const Rightbar = () => {
         <Button onClick={handledelete} variant='contained'>删除</Button>
       </DialogActions>
     </Dialog>
+
+
+    <Dialog
+      open={suc}
+      fullWidth={true}
+      maxWidth={'sm'}
+      onClose={()=>{
+        setsuc(false)
+        navigate(0)
+      }}
+      PaperComponent={PaperComponent}
+      aria-labelledby="draggable-dialog-title"
+      >
+
+      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+        成功
+      </DialogTitle>
+      <DialogContent>
+        
+      <DialogContentText>
+        <Typography>{`"`+mdItemName+`"`+" 删除成功"}</Typography>
+        
+      </DialogContentText>
+      
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={()=>{
+          setsuc(false)
+          navigate(0)
+        }} variant='contained'>太好了!</Button>
+      </DialogActions>
+    </Dialog>
+
+    
     </Box>
   )
 }

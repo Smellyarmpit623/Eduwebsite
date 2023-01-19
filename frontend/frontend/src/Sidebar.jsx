@@ -164,11 +164,8 @@ const Sidebar = () => {
       else{
         if(response.status===200)
         {
-          navigate(0)
           setadditem(false)
-          setsnackmsg(`"`+ItemTitle+`"`+" 添加成功")
-          setsnackseverity("success")
-          setGBsnack(true);
+          setsuc(true)
         }
         
       }
@@ -206,8 +203,40 @@ const Sidebar = () => {
   const [open0, setOpen0] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [suc,setsuc]=useState(false)
   return (
     <Fragment>
+
+    <Dialog
+      open={suc}
+      fullWidth={true}
+      maxWidth={'sm'}
+      onClose={()=>{
+        setsuc(false)
+        navigate(0)
+      }}
+      PaperComponent={PaperComponent}
+      aria-labelledby="draggable-dialog-title"
+      >
+
+      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+        成功
+      </DialogTitle>
+      <DialogContent>
+        
+      <DialogContentText>
+        <Typography>{`"`+ItemTitle+`"`+" 添加成功"}</Typography>
+        
+      </DialogContentText>
+      
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={()=>{
+          setsuc(false)
+          navigate(0)
+        }} variant='contained'>太好了!</Button>
+      </DialogActions>
+    </Dialog>
     <List
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
       component="nav"
