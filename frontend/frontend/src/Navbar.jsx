@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
-import { Box, Container, Typography,Stack, AppBar, Toolbar, styled, InputBase, Badge, Avatar, Menu, MenuItem} from '@mui/material';
+import { Box, Container, Typography,Stack, AppBar, Toolbar, styled, InputBase, Badge, Avatar, Menu, MenuItem, Fab} from '@mui/material';
 import { Mail , Notifications, Token} from '@mui/icons-material';
 import { useState } from 'react';
 import { UserContext } from './Context/UserContext';
 import LoginForm from './LoginRegisterForm';
 import { SnackContext } from './Context/Snackbar';
+import { redirect } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StyledToolbar = styled(Toolbar)({
   display:"flex",
@@ -44,6 +46,8 @@ const Navbar = () => {
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
+  const navigate = useNavigate();
+
   const Logout=()=>{
     settoken(null)
     localStorage.setItem("Token",null)
@@ -56,7 +60,9 @@ const Navbar = () => {
   return (
     <AppBar position='sticky'> 
       <StyledToolbar> 
-        <Typography variant='h6'> XX Academy </Typography>
+
+      <Typography onClick={()=>navigate('/')} variant='h6'> SW Academy </Typography>
+
         <SearchBar> <InputBase placeholder='Search'></InputBase> </SearchBar>
 
 

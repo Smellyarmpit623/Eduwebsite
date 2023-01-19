@@ -7,6 +7,8 @@ import { UserContext } from './Context/UserContext';
 import { FeedContext } from './Context/FeedContext';
 import { SnackContext } from './Context/Snackbar';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Rightbar = () => {
@@ -21,16 +23,17 @@ const Rightbar = () => {
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
+  const navigate = useNavigate();
+
+
   return (
     <Box>
-      {admin && mdCID!=="" && mdItemName!==""?(<Fragment>
-        <Link to={`/editor/${mdCID}/${mdItemName}`}><Fab color="secondary" aria-label="edit" variant='extended' sx={{
+      {admin && mdCID!=="" && mdItemName!==""?(<Fragment><Fab onClick={()=>navigate(`/editor/${mdCID}/${mdItemName}`)} color="secondary" aria-label="edit" variant='extended' sx={{
         margin:"8px"
       }}>
         <EditIcon sx={{mr:1}}/>
         编辑笔记
       </Fab>
-      </Link>
       <Fab color="secondary" aria-label="edit" variant='extended' sx={{
         margin:"8px"
       }}>

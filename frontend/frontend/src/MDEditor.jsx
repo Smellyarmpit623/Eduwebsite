@@ -48,8 +48,8 @@ function MDEditor() {
         borderRadius:"10px",
         p:2,
       }}>
-            <Feed/>
-            </Box>
+          <Feed/>
+          </Box>
       </Grid>
       </Grid>
     </Box>
