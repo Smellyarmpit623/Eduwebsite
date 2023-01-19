@@ -64,6 +64,7 @@ const Rightbar = () => {
         else{
           if(response.Msg==="Item has been deleted")
           {
+            navigate(0)
             setsnackmsg("删除成功!")
             setsnackseverity("success")
             setGBsnack(true);

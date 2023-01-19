@@ -36,6 +36,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import { SnackContext } from './Context/Snackbar';
 import { FeedContext } from './Context/FeedContext';
 import { ElectricBikeSharp } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -112,6 +113,7 @@ const Sidebar = () => {
   const [cab202,setcab202]=useState([])
   const [cab201,setcab201]=useState([])
   const [mxb100,setmxb100]=useState([])
+  const navigate = useNavigate();
   
 
   //const []
@@ -120,6 +122,7 @@ const Sidebar = () => {
 
   
   const submit=async()=>{
+    
     const requestOptions = {
       method: "POST",
       headers: {
@@ -161,6 +164,7 @@ const Sidebar = () => {
       else{
         if(response.status===200)
         {
+          navigate(0)
           setadditem(false)
           setsnackmsg(`"`+ItemTitle+`"`+" 添加成功")
           setsnackseverity("success")
