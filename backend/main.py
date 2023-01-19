@@ -74,7 +74,7 @@ async def Add_Item(Item:schema.CourseItem,db_session=fastapi.Depends(connection_
 
 
 @app.delete("/Course/DeleteItem")
-async def DeleteItem(Item:schema.CourseItemUpdate,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
+async def DeleteItem(Item:schema.CourseItem,db_session=fastapi.Depends(connection_to_database),user:schema.User=fastapi.Depends(get_current_user)):
     if user.Title == 'Admin':
         item=await itemselector(Item=Item,db_session=db_session)
         db_session.delete(item)

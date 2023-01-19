@@ -55,7 +55,7 @@ async def create_md(mdname,cid):
     f.close()
 
 
-async def itemselector(db_session,Item:_schema.CourseItemUpdate):
+async def itemselector(db_session,Item:_schema.CourseItem):
     item=db_session.query(db_model.Course).filter(db_model.Course.ItemName==Item.ItemName).first()
     if item is None:
         raise fastapi.HTTPException(status_code=404,detail="Item does not exist")

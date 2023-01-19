@@ -102,6 +102,18 @@ export const MDToolbar = () => {
     };
 
     const response = await fetch("http://120.79.159.198:5000/Course/UpdateItem/", requestOptions)
+    .catch(()=>{
+        setsnackmsg("上传失败，原因: 未知")
+        setsnackseverity("warning")
+        setGBsnack(true);
+    })
+    .then(()=>{
+      setsnackmsg("上传成功!")
+      setsnackseverity("success")
+      setGBsnack(true);
+      setconfirm(false)
+    })
+    
     
   }
 
