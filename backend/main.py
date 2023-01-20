@@ -99,23 +99,25 @@ async def GetContent(Course_ID:str ,ItemName:str ,user:schema.User=fastapi.Depen
             await membership_init(CID=Course_ID,db_session=db_session,user=user)
             raise fastapi.HTTPException(status_code=402,detail="Membership does not exist")
         elif result.DateExpire>datetime.now():
-            result = db_session.query(Course).filter(Course_ID==Course.CourseID,ItemName == Course.ItemName).first()
-            if type(result)==Course:
-                return await itemcontent(Course_ID,ItemName)
-            else:
-                raise fastapi.HTTPException(status_code=404,detail="Course Item not found")
+            return await sendcontent(Course_ID=Course_ID, ItemName=ItemName, db_session=db_session)
         else:
             raise fastapi.HTTPException(status_code=403, detail="Membership has expired")
 
     else:
-        result = db_session.query(Course).filter(Course_ID == Course.CourseID, ItemName == Course.ItemName).first()
-        if type(result) == Course:
-            return await itemcontent(Course_ID,ItemName)
+        return await sendcontent(Course_ID=Course_ID, ItemName=ItemName, db_session=db_session)
+
+
+@app.get("/Course/GetT/{TName}")
+async def GetT(TName:str ,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title!="Banned":
+        result = db_session.query(Word).filter(Word.Word==TName).first()
+        if type(result)!= Word:
+            await newWord(db_session=db_session,TName=TName)
+            return await getWordcontent(db_session=db_session,TName=TName)
         else:
-            raise fastapi.HTTPException(status_code=404, detail="Course Item not found")
-
-
-
+            return await getWordcontent(db_session=db_session, TName=TName)
+    else:
+        raise fastapi.HTTPException(status_code=403,detail="Banned")
 
 
 

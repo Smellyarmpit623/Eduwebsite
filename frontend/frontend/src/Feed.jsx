@@ -1,7 +1,6 @@
 import React,{useContext, useState} from 'react'
 import { Box, Container, Typography,Stack, Paper} from '@mui/material';
 import { useEffect } from 'react';
-import nigga from './nigga.txt'
 import Code from './MDcomponent/CodeBlock';
 import { YTPlayer } from './MDcomponent/YoutubePlayer';
 import { LatexComponent } from './MDcomponent/Latex';
@@ -49,7 +48,7 @@ const Feed = () => {
           },
           
         }
-        const response = await fetch("http://120.79.159.198:5000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+        const response = await fetch("http://127.0.0.1:8000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
         if(!response.ok)
         {
           if(response.status===403)

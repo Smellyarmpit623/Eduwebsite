@@ -58,7 +58,7 @@ const LoginForm = () => {
     {
       const requestoption={
         method:"POST",
-        url:"http://120.79.159.198:5000/User/Login/",
+        url:"http://127.0.0.1:8000/User/Login/",
         headers: {
           "Accept":"application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -114,7 +114,7 @@ const LoginForm = () => {
     {
       const requestoption={
         method:"POST",
-        url:"http://120.79.159.198:5000/User/Register/",
+        url:"http://127.0.0.1:8000/User/Register/",
         headers: {
           "Accept":"application/json",
           "Content-Type": "application/json"

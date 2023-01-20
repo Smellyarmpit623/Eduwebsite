@@ -99,3 +99,32 @@ async def itemcontent(CID,Itemname):
     content=f.read()
     f.close()
     return content
+
+
+async def sendcontent(Course_ID:str ,ItemName:str, db_session):
+    result = db_session.query(db_model.Course).filter(Course_ID == db_model.Course.CourseID, ItemName == db_model.Course.ItemName).first()
+    if type(result) == db_model.Course:
+        return await itemcontent(Course_ID, ItemName)
+    else:
+        raise fastapi.HTTPException(status_code=404, detail="Course Item not found")
+
+
+async def newWord(TName:str,db_session):
+    try:
+        new_word = db_model.Word(Word=TName)
+        db_session.add(new_word)
+        db_session.commit()
+        f = open("./mds/Words/" + TName + ".md", "a")
+        f.close()
+    except:
+        raise fastapi.HTTPException(status_code=404,detail="unknown error when creating a new word")
+
+
+async def getWordcontent(TName:str,db_session):
+    try:
+        f = io.open(file="./mds/Words/" + TName + ".md", mode="br+")
+        content = f.read()
+        f.close()
+        return content
+    except:
+        raise fastapi.HTTPException(status_code=404,detail="unknown error when reading a word")

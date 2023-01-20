@@ -44,9 +44,18 @@ class Membership(Base):
         self.DateExpire=DateExpire
 
 
+class Word(Base):
+    __tablename__ = "Word"
+    WordID=Column("WordID", Integer,primary_key=True)
+    Word = Column("Word", String)
+    def __init__(self,Word):
+        self.WordID=None
+        self.Word=Word
+
+
 def connection_to_database():
     engine=create_engine("sqlite:///DB.db",echo=True)
-    #Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
     Session=sessionmaker(autocommit=False, autoflush=False, bind=engine)
     try:
         session=Session()
