@@ -28,7 +28,7 @@ function PaperComponent(props) {
   }
 
 
-const Termernology = ({children}) => {
+const Terminology = ({children}) => {
     
     const [ShowDefin,SetShowDefin]=useState(false)
     const {token1,admin1}=useContext(UserContext)
@@ -134,7 +134,7 @@ const Termernology = ({children}) => {
                                 component: LatexComponent
                             },
                             Pedia:{
-                                component: Termernology
+                                component: Terminology
                             }
                             }
                         }}>
@@ -155,4 +155,4 @@ const Termernology = ({children}) => {
     )
 }
 
-export default Termernology
+export default Terminology

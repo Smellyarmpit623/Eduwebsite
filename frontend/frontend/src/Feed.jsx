@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Code from './MDcomponent/CodeBlock';
 import { YTPlayer } from './MDcomponent/YoutubePlayer';
 import { LatexComponent } from './MDcomponent/Latex';
-import Termernology from './MDcomponent/Termernology.jsx';
+import Terminology from './MDcomponent/Terminology.jsx';
 import Htmlblock from './MDcomponent/Htmlblock';
 import { Html } from '@mui/icons-material';
 import { UserContext } from './Context/UserContext';
@@ -109,9 +109,9 @@ const Feed = () => {
               />
             ) : (
               <code className={className} {...props}>
-                <Termernology>
+                <Terminology>
                   {children}
-                </Termernology>
+                </Terminology>
               </code>
             )
           },
