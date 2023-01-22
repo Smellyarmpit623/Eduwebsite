@@ -134,7 +134,7 @@ const Sidebar = () => {
         "ItemName":ItemTitle
       })
     }
-    const response = await fetch("http://127.0.0.1:8000/Course/AddItem/", requestOptions)
+    const response = await fetch("http://120.79.159.198:5000/Course/AddItem/", requestOptions)
       if (!response.ok) {
         if(response.status===403)
         {
@@ -179,7 +179,7 @@ const Sidebar = () => {
         "Content-Type": "application/json",
       },
     }
-    return await fetch("http://127.0.0.1:8000/Course/GetCourseItem/"+id, requestOptions)
+    return await fetch("http://120.79.159.198:5000/Course/GetCourseItem/"+id, requestOptions)
     .then((response)=>response.json())
     .catch(()=>{
           setsnackmsg("获取课程列表时出现未知错误")

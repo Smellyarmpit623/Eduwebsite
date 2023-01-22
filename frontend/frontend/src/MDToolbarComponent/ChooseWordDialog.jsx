@@ -46,7 +46,7 @@ export const ChooseWordDialog = (props) => {
             },
             
           }
-          const response = await fetch("http://127.0.0.1:8000/Course/GetT/"+word,requestoptions)
+          const response = await fetch("http://120.79.159.198:5000/Course/GetT/"+word,requestoptions)
           if(!response.ok)
           {
             setsnackmsg("获取词条内容时出现未知错误")
@@ -58,9 +58,11 @@ export const ChooseWordDialog = (props) => {
             if(response.status===200)
             {
               response.json().then((value)=>{
+                setmdItemName("")
                 setmd(value)
                 setchoose(false)
                 setentry(true)
+                
                 if(value==="")
                 {
                     setsnackmsg("词条为空，可能是词条名字不正确，或者词条第一次被编辑 ")

@@ -56,7 +56,7 @@ export const MDToolbar = () => {
           "Content-Type": "application/json",
         },
       }
-      return await fetch("http://127.0.0.1:8000/Course/GetCourseItem/"+id, requestOptions)
+      return await fetch("http://120.79.159.198:5000/Course/GetCourseItem/"+id, requestOptions)
       .then((response)=>response.json())
       .catch(()=>{
             setsnackmsg("获取课程列表时出现未知错误")
@@ -103,7 +103,7 @@ export const MDToolbar = () => {
           "UpdateContent": md
         })
       };
-      const response = await fetch("http://127.0.0.1:8000/Course/UpdateEntry/", requestOptions)
+      const response = await fetch("http://120.79.159.198:5000/Course/UpdateEntry/", requestOptions)
       if(response.ok)
       {
         setsnackmsg("词条上传完毕，内容已更新 😉")
@@ -159,7 +159,7 @@ export const MDToolbar = () => {
           "NewItemName":mdItemName,
         })
       };
-      const response = await fetch("http://127.0.0.1:8000/Course/UpdateItem/", requestOptions)
+      const response = await fetch("http://120.79.159.198:5000/Course/UpdateItem/", requestOptions)
       .catch(()=>{
           setsnackmsg("上传失败，原因: 未知")
           setsnackseverity("warning")
@@ -261,15 +261,16 @@ export const MDToolbar = () => {
           }}
         >
           {
+
               clist_array[mdCID].map((value)=>
               <MenuItem value={value.ItemName} onClick={()=>{
                 setselect(false)
               }}>{value.ItemName}</MenuItem>)
+
           }
         </Select></Fragment>)
         }
       </Box>
-        <Button variant='contained' onClick={upload}>上传</Button>
       </DialogContent>
       <DialogActions>
 

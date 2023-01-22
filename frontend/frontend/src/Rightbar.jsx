@@ -52,7 +52,7 @@ const Rightbar = () => {
         "ItemName":mdItemName,
       })
     }
-    fetch("http://127.0.0.1:8000/Course/DeleteItem", requestOptions)
+    fetch("http://120.79.159.198:5000/Course/DeleteItem", requestOptions)
       .then((response)=>response.json())
       .then((response)=>{
         if(response.detail==="Not an Admin")
