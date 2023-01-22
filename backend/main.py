@@ -121,7 +121,12 @@ async def GetT(TName:str ,user:schema.User=fastapi.Depends(get_current_user),db_
 
 
 
-
+@app.put("/Course/UpdateEntry/")
+async def UpdateEntry(NewEntry:schema.UpdateEntry,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title in WritePermission:
+        return await update_entry(NewEntry=NewEntry,db_session=db_session)
+    else:
+        raise fastapi.HTTPException(status_code=403,detail="Not a teacher or an Admin")
 
 
 

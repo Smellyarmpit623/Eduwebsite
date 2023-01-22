@@ -45,5 +45,13 @@ class Content(BaseModel):
     class Config:
         orm_mode = True
 
+class UpdateEntry(BaseModel):
+    EntryName:str
+    UpdateContent:str
+
+    class Config:
+        orm_mode = True
+
+
 
 

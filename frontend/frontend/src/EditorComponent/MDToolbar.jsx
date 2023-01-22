@@ -10,6 +10,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 import Draggable from 'react-draggable';
 import { margin } from '@mui/system';
+import { ChooseWordDialog } from '../MDToolbarComponent/ChooseWordDialog';
 
 
 function PaperComponent(props) {
@@ -24,7 +25,8 @@ function PaperComponent(props) {
 }
 
 export const MDToolbar = () => {
-    const {mdCID1,mdItemName1,md1} = useContext(FeedContext)
+    const {mdCID1,mdItemName1,md1,entry1} = useContext(FeedContext)
+    const [entry,setentry]=entry1
     const {token1,admin1}=useContext(UserContext)
     const [token,settoken]=token1
     const [mdCID,setmdCID]=mdCID1
@@ -37,7 +39,6 @@ export const MDToolbar = () => {
     const [select,setselect]=useState(false)
     const [confirm,setconfirm]=useState(false)
     const [newname,setnewname]=useState("")
-    const label = { inputProps: { 'aria-label': '确认上传' } }; 
     const [cab202,setcab202]=useState([])
     const [cab201,setcab201]=useState([])
     const [mxb100,setmxb100]=useState([])
@@ -45,7 +46,8 @@ export const MDToolbar = () => {
       "CAB-202":cab202,
       "CAB-201":cab201,
       "MXB-100":mxb100})
-
+    const [choose,setchoose]=useState(false)
+    const [word,setword]=useState("")
 
     const getitem = async(id) =>{
       const requestOptions = {
@@ -87,32 +89,89 @@ export const MDToolbar = () => {
     }
     ,[])
   const upload= async()=>{
-    const requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body:JSON.stringify({
-        "CourseID":mdCID,
-        "ItemName":mdItemName,
-        "MarkdownUpdate":md,
-        "NewItemName":mdItemName,
-      })
-    };
-
-    const response = await fetch("http://127.0.0.1:8000/Course/UpdateItem/", requestOptions)
-    .catch(()=>{
-        setsnackmsg("上传失败，原因: 未知")
-        setsnackseverity("warning")
+    
+    if(entry===true)
+    {
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body:JSON.stringify({
+          "EntryName": word,
+          "UpdateContent": md
+        })
+      };
+      const response = await fetch("http://127.0.0.1:8000/Course/UpdateEntry/", requestOptions)
+      if(response.ok)
+      {
+        setsnackmsg("词条上传完毕，内容已更新 😉")
+        setsnackseverity("success")
         setGBsnack(true);
-    })
-    .then(()=>{
-      setsnackmsg("上传成功!")
-      setsnackseverity("success")
-      setGBsnack(true);
-      setconfirm(false)
-    })
+        setconfirm(false)
+      }
+      else
+      {
+        if(response.status===403)
+        {
+          setsnackmsg("权限不足! 😓")
+          setsnackseverity("error")
+          setGBsnack(true);
+          setconfirm(false)
+        }
+        else
+        {
+          if(response.status===404)
+          {
+            if(response.detail==="Entry not found")
+            {
+              setsnackmsg("词条突然找不到了! 😭")
+              setsnackseverity("error")
+              setGBsnack(true);
+              setconfirm(false)
+            }
+            else{
+              if(response.detail==="Unknown error when writing to md")
+              {
+              setsnackmsg("写入文件时出错，请联系超级管理员! 😭")
+              setsnackseverity("error")
+              setGBsnack(true);
+              setconfirm(false)
+              }
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body:JSON.stringify({
+          "CourseID":mdCID,
+          "ItemName":mdItemName,
+          "MarkdownUpdate":md,
+          "NewItemName":mdItemName,
+        })
+      };
+      const response = await fetch("http://127.0.0.1:8000/Course/UpdateItem/", requestOptions)
+      .catch(()=>{
+          setsnackmsg("上传失败，原因: 未知")
+          setsnackseverity("warning")
+          setGBsnack(true);
+      })
+      .then(()=>{
+        setsnackmsg("上传成功!")
+        setsnackseverity("success")
+        setGBsnack(true);
+        setconfirm(false)
+      })
+  }
     
     
   }
@@ -121,11 +180,20 @@ export const MDToolbar = () => {
     <Box>
 
 
-      <Fab color="secondary" onClick={()=>setselect(true)} aria-label="edit" variant='extended' sx={{
+      <Fab color="secondary" onClick={()=>{setselect(true)
+      setentry(false)  
+    }} aria-label="edit" variant='extended' sx={{
         margin:"8px" 
       }}>
         <FindInPageIcon sx={{mr:1}}/>
         选择笔记
+      </Fab>
+
+      <Fab color="secondary" onClick={()=>setchoose(true)} aria-label="edit" variant='extended' sx={{
+        margin:"8px" 
+      }}>
+        <FindInPageIcon sx={{mr:1}}/>
+        选择名词
       </Fab>
 
 
@@ -137,6 +205,8 @@ export const MDToolbar = () => {
       </Fab>
 
       
+      <ChooseWordDialog value={[choose,setchoose,word,setword]}/>
+
       
       <Dialog
       open={select}
@@ -199,7 +269,7 @@ export const MDToolbar = () => {
         </Select></Fragment>)
         }
       </Box>
-
+        <Button variant='contained' onClick={upload}>上传</Button>
       </DialogContent>
       <DialogActions>
 

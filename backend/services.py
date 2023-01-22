@@ -128,3 +128,16 @@ async def getWordcontent(TName:str,db_session):
         return content
     except:
         raise fastapi.HTTPException(status_code=404,detail="unknown error when reading a word")
+
+async def update_entry(NewEntry:_schema.UpdateEntry,db_session):
+    result = db_session.query(db_model.Word).filter(NewEntry.EntryName == db_model.Word.Word).first()
+    if type(result) == db_model.Word:
+        try:
+            f = io.open(file="./mds/Words/"+NewEntry.EntryName+".md", mode="w")
+            f.write(NewEntry.UpdateContent)
+            f.close()
+            return {"Msg":"Updated"}
+        except:
+            raise fastapi.HTTPException(status_code=404,detail="Unknown error when writing to md")
+    else:
+        raise fastapi.HTTPException(status_code=404,detail="Entry not found")
