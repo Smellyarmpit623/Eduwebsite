@@ -6,6 +6,7 @@ import { SnackContext } from '../Context/Snackbar';
 import { UserContext } from '../Context/UserContext';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
+import { BackendContext } from '../Context/BackendContext';
 
 export const ETextarea = (props) => {
     const {mdCID1,mdItemName1,md1} = useContext(FeedContext)
@@ -18,6 +19,7 @@ export const ETextarea = (props) => {
     const [GBsnack,setGBsnack]=GBsnack1
     const [snackmsg,setsnackmsg]=snackmsg1
     const [snackseverity,setsnackseverity]=snackseverity1
+    const [add,setadd]=useContext(BackendContext)
 
     useEffect(()=>{
       setmdCID(props.cid)
@@ -37,7 +39,7 @@ export const ETextarea = (props) => {
             
           }
           console.log(props.cid)
-          const response = await fetch("http://120.79.159.198:5000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+          const response = await fetch(add+"/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
           if(!response.ok)
           {
             if(response.status===403)

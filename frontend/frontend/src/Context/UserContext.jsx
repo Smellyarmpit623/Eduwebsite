@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Token } from '@mui/icons-material';
 import { SnackContext } from './Snackbar';
+import { BackendContext } from './BackendContext';
 
 
 export const UserContext = createContext();
@@ -13,6 +14,7 @@ export const UserContextProvider=(props)=>{
     const [GBsnack,setGBsnack]=GBsnack1
     const [snackmsg,setsnackmsg]=snackmsg1
     const [snackseverity,setsnackseverity]=snackseverity1
+    const [add,setadd]=useContext(BackendContext)
     useEffect(()=>{
         const fetchuser=async()=>{
             const requestOptions = {
@@ -23,7 +25,7 @@ export const UserContextProvider=(props)=>{
                 },
               };
         
-              const response = await fetch("http://120.79.159.198:5000/User/Me/", requestOptions)
+              const response = await fetch(add+"/User/Me/", requestOptions)
               if (!response.ok) {
                 settoken(null);
                 

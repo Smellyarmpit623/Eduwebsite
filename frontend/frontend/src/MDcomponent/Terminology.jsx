@@ -14,6 +14,7 @@ import { LatexComponent } from './Latex';
 import Markdown from "markdown-to-jsx"
 import { UserContext } from '../Context/UserContext';
 import { SnackContext } from '../Context/Snackbar';
+import { BackendContext } from '../Context/BackendContext';
 
 
 function PaperComponent(props) {
@@ -38,6 +39,7 @@ const Terminology = ({children}) => {
     const [GBsnack,setGBsnack]=GBsnack1
     const [snackmsg,setsnackmsg]=snackmsg1
     const [snackseverity,setsnackseverity]=snackseverity1
+    const [add,setadd]=useContext(BackendContext)
 
     useEffect(() => {
         const updatemd=async()=>{
@@ -51,7 +53,7 @@ const Terminology = ({children}) => {
               },
               
             }
-            const response = await fetch("http://120.79.159.198:5000/Course/GetT/"+children,requestoptions)
+            const response = await fetch(add+"/Course/GetT/"+children,requestoptions)
             if(!response.ok)
             {
               if(response.status===403)

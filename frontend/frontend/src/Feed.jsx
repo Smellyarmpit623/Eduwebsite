@@ -17,6 +17,7 @@ import rehypeKatex from 'rehype-katex'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {coldarkDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
+import { BackendContext } from './Context/BackendContext';
 
 
 
@@ -35,6 +36,7 @@ const Feed = () => {
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
+  const [add,setadd]=useContext(BackendContext)
 
   useEffect(() => {
     const updatemd=async()=>{
@@ -48,7 +50,7 @@ const Feed = () => {
           },
           
         }
-        const response = await fetch("http://120.79.159.198:5000/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
+        const response = await fetch(add+"/Course/GetContent/"+mdCID+"/"+mdItemName+"/",requestoptions)
         if(!response.ok)
         {
           if(response.status===403)

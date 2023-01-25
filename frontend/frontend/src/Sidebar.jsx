@@ -37,6 +37,7 @@ import { SnackContext } from './Context/Snackbar';
 import { FeedContext } from './Context/FeedContext';
 import { ElectricBikeSharp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { BackendContext } from './Context/BackendContext';
 
 
 
@@ -113,6 +114,7 @@ const Sidebar = () => {
   const [cab202,setcab202]=useState([])
   const [cab201,setcab201]=useState([])
   const [mxb100,setmxb100]=useState([])
+  const [add,setadd]=useContext(BackendContext)
   const navigate = useNavigate();
   
 
@@ -134,7 +136,7 @@ const Sidebar = () => {
         "ItemName":ItemTitle
       })
     }
-    const response = await fetch("http://120.79.159.198:5000/Course/AddItem/", requestOptions)
+    const response = await fetch(add+"/Course/AddItem/", requestOptions)
       if (!response.ok) {
         if(response.status===403)
         {
@@ -179,7 +181,7 @@ const Sidebar = () => {
         "Content-Type": "application/json",
       },
     }
-    return await fetch("http://120.79.159.198:5000/Course/GetCourseItem/"+id, requestOptions)
+    return await fetch(add+"/Course/GetCourseItem/"+id, requestOptions)
     .then((response)=>response.json())
     .catch(()=>{
           setsnackmsg("获取课程列表时出现未知错误")

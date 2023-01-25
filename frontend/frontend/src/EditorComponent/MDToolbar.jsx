@@ -11,6 +11,7 @@ import FindInPageIcon from '@mui/icons-material/FindInPage';
 import Draggable from 'react-draggable';
 import { margin } from '@mui/system';
 import { ChooseWordDialog } from '../MDToolbarComponent/ChooseWordDialog';
+import { BackendContext } from '../Context/BackendContext';
 
 
 function PaperComponent(props) {
@@ -48,6 +49,7 @@ export const MDToolbar = () => {
       "MXB-100":mxb100})
     const [choose,setchoose]=useState(false)
     const [word,setword]=useState("")
+    const [add,setadd]=useContext(BackendContext)
 
     const getitem = async(id) =>{
       const requestOptions = {
@@ -56,7 +58,7 @@ export const MDToolbar = () => {
           "Content-Type": "application/json",
         },
       }
-      return await fetch("http://120.79.159.198:5000/Course/GetCourseItem/"+id, requestOptions)
+      return await fetch(add+"/Course/GetCourseItem/"+id, requestOptions)
       .then((response)=>response.json())
       .catch(()=>{
             setsnackmsg("获取课程列表时出现未知错误")
@@ -103,7 +105,7 @@ export const MDToolbar = () => {
           "UpdateContent": md
         })
       };
-      const response = await fetch("http://120.79.159.198:5000/Course/UpdateEntry/", requestOptions)
+      const response = await fetch(add+"/Course/UpdateEntry/", requestOptions)
       if(response.ok)
       {
         setsnackmsg("词条上传完毕，内容已更新 😉")
@@ -159,7 +161,7 @@ export const MDToolbar = () => {
           "NewItemName":mdItemName,
         })
       };
-      const response = await fetch("http://120.79.159.198:5000/Course/UpdateItem/", requestOptions)
+      const response = await fetch(add+"/Course/UpdateItem/", requestOptions)
       .catch(()=>{
           setsnackmsg("上传失败，原因: 未知")
           setsnackseverity("warning")

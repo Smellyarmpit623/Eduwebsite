@@ -16,6 +16,7 @@ import Slide from '@mui/material/Slide';
 import axios from 'axios';
 import { UserContext } from './Context/UserContext';
 import { SnackContext } from './Context/Snackbar';
+import { BackendContext } from './Context/BackendContext';
 
 
 function PaperComponent(props) {
@@ -51,6 +52,7 @@ const LoginForm = () => {
   const [GBsnack,setGBsnack]=GBsnack1
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
+  const [add,setadd]=useContext(BackendContext)
 
   const handleLogin = async() => {
     //
@@ -58,7 +60,7 @@ const LoginForm = () => {
     {
       const requestoption={
         method:"POST",
-        url:"http://120.79.159.198:5000/User/Login/",
+        url: add+"/User/Login/",
         headers: {
           "Accept":"application/json",
           "Content-Type": "application/x-www-form-urlencoded"
@@ -114,7 +116,7 @@ const LoginForm = () => {
     {
       const requestoption={
         method:"POST",
-        url:"http://120.79.159.198:5000/User/Register/",
+        url: add+"/User/Register/",
         headers: {
           "Accept":"application/json",
           "Content-Type": "application/json"

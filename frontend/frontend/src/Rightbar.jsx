@@ -9,6 +9,7 @@ import { SnackContext } from './Context/Snackbar';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Draggable from 'react-draggable';
+import { BackendContext } from './Context/BackendContext';
 
 
 function PaperComponent(props) {
@@ -39,6 +40,7 @@ const Rightbar = () => {
   const navigate = useNavigate();
   const [delete1,setdelete] = useState(false)
   const [suc,setsuc]=useState(false)
+  const [add,setadd]=useContext(BackendContext)
 
   const handledelete = () => {
     const requestOptions = {
@@ -52,7 +54,7 @@ const Rightbar = () => {
         "ItemName":mdItemName,
       })
     }
-    fetch("http://120.79.159.198:5000/Course/DeleteItem", requestOptions)
+    fetch(add+"/Course/DeleteItem", requestOptions)
       .then((response)=>response.json())
       .then((response)=>{
         if(response.detail==="Not an Admin")
