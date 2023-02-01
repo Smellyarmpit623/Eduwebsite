@@ -7,6 +7,7 @@ import { UserContext } from '../Context/UserContext';
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
 import Draggable from 'react-draggable';
 import SearchIcon from '@mui/icons-material/Search';
+import { BackendContext } from '../Context/BackendContext';
 
 
 function PaperComponent(props) {
@@ -35,6 +36,7 @@ export const ChooseWordDialog = (props) => {
     const [mdItemName,setmdItemName]=mdItemName1
     const [entry,setentry]=entry1
     const [choose,setchoose,word,setword]=props.value
+    const [add,setadd]=useContext(BackendContext)
 
 
     const handlesearch= async()=>{
@@ -46,7 +48,7 @@ export const ChooseWordDialog = (props) => {
             },
             
           }
-          const response = await fetch("http://120.79.159.198:5000/Course/GetT/"+word,requestoptions)
+          const response = await fetch(add+"/Course/GetT/"+word,requestoptions)
           if(!response.ok)
           {
             setsnackmsg("获取词条内容时出现未知错误")

@@ -4,7 +4,7 @@ export const BackendContext = createContext();
 
 export const BackendContextProvider = (props) => {
 
-    const [add,setadd]=useState("http://120.79.159.198:5000")
+    const [add,setadd]=useState("http://127.0.0.1:8000")
 
   return (
     <BackendContext.Provider value={[add,setadd]}>

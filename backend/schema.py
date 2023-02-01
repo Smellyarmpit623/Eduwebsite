@@ -15,7 +15,7 @@ class User(BaseModel):
 class Register(BaseModel):
     User_ID:str
     Password:str
-
+    Ref:str
     class Config:
         orm_mode = True
 
@@ -52,6 +52,14 @@ class UpdateEntry(BaseModel):
     class Config:
         orm_mode = True
 
+
+class UpdateMembership(BaseModel):
+    CourseID:str
+    User_ID:str
+    Time:str
+
+    class Config:
+        orm_mode = True
 
 
 

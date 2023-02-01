@@ -1,8 +1,12 @@
+import { Home } from '@mui/icons-material';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes, Switch } from 'react-router-dom';
 import { Admin } from './Admin';
+import { AdminLogin } from './AdminLogin';
 import App from './App';
+import { MembershipList } from './BackendComponent/MembershipList';
+import { Homepage } from './BackendComponent/Home';
 import { BackendContext, BackendContextProvider } from './Context/BackendContext';
 import { FeedContextProvider } from './Context/FeedContext';
 import { SnackbarContextProvider } from './Context/Snackbar';
@@ -21,8 +25,15 @@ root.render(
     <Routes>
       <Route path="/index" element={<App />}/>
       <Route path="/" element={<App />}/>
-      <Route path="/Admin"element={<Admin />}/>
+      <Route path="/Admin"element={<AdminLogin />}/>
       <Route path="/editor/:CID/:ItemName"element={<MDEditor />}/>
+      
+      
+      <Route path="/Admin/Tool/"element={<Admin />}>
+      <Route path="/Admin/Tool/Home/"element={<Homepage />}/>
+      <Route path="/Admin/Tool/Add/"element={<MembershipList />}/>
+      </Route>
+      
     </Routes>
     
     </BrowserRouter>

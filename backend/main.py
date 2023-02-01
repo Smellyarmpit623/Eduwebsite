@@ -23,7 +23,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-WritePermission=['Admin','Teacher Assistant','Tutor','Teacher']
+WritePermission=['Admin','Teacher Assistant','Tutor','Teacher','Super Admin']
 CourseList=['CAB-201','CAB-202','MXB-100']
 
 @app.get("/")
@@ -43,6 +43,18 @@ async def Login(Login:fastapi.security.OAuth2PasswordRequestForm=fastapi.Depends
     if type(result)==db_model.User and passlib.hash.bcrypt.verify(Login.password,result.Password):
         token=await create_token(result)
         return token
+    else:
+        raise fastapi.HTTPException(status_code=401, detail="Invalid Credentials")
+
+@app.post("/SuperAdmin/Login/")
+async def SuperAdminLogin(Login:fastapi.security.OAuth2PasswordRequestForm=fastapi.Depends(),db_session=fastapi.Depends(connection_to_database)):
+    result=db_session.query(User).filter(User.User_ID==Login.username).first()
+    if type(result)==db_model.User and passlib.hash.bcrypt.verify(Login.password,result.Password):
+        if result.Title != "Super Admin":
+            raise fastapi.HTTPException(status_code=403, detail="Not a Super Admin")
+        else:
+            token=await create_token(result)
+            return token
     else:
         raise fastapi.HTTPException(status_code=401, detail="Invalid Credentials")
 
@@ -129,7 +141,37 @@ async def UpdateEntry(NewEntry:schema.UpdateEntry,user:schema.User=fastapi.Depen
         raise fastapi.HTTPException(status_code=403,detail="Not a teacher or an Admin")
 
 
+@app.get("/SuperAdmin/Membership_List/")
+async def Membership_List(user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title == "Super Admin":
+        result = db_session.query(Membership).all()
+        return result
+    else:
+        raise fastapi.HTTPException(status_code=403,detail="Not a Super Admin")
+
+
+@app.get("/SuperAdmin/Student_List/")
+async def Student_List(user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title == "Super Admin":
+        result = db_session.query(User).all()
+        list1=[]
+        try:
+            for i in result:
+                list1.append({"label":i.User_ID})
+        except:
+            raise fastapi.HTTPException(status_code=404,detail="Cant find any students")
+
+        return list1
+    else:
+        raise fastapi.HTTPException(status_code=403,detail="Not a Super Admin")
 
 
 
 
+
+@app.put("/SuperAdmin/Membership_Update/")
+async def Membership_Update(Update:schema.UpdateMembership,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
+    if user.Title == "Super Admin":
+        return await update_member(Update=Update, user=user, db_session=db_session)
+    else:
+        raise fastapi.HTTPException(status_code=403, detail="Not a Super Admin")

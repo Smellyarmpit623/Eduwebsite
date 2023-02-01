@@ -14,11 +14,14 @@ class User(Base):
     User_ID=Column("User_ID",String,primary_key=True)
     Password=Column("Password",String)
     Title=Column("Title",String,nullable=False)
+    Ref = Column("Ref", String, nullable=False)
 
-    def __init__(self, User_ID, Password, Title):
+    def __init__(self, User_ID, Password, Title ,Ref):
         self.User_ID=User_ID
         self.Password=Password
         self.Title=Title
+        self.Ref=Ref
+
 
 class Course(Base):
     __tablename__ = "Course"

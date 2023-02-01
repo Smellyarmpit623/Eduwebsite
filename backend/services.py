@@ -2,7 +2,7 @@ import schema as _schema
 import fastapi
 from fastapi import Depends
 import db_model
-from datetime import datetime
+from datetime import datetime, timedelta
 import passlib.hash
 import os
 import jwt
@@ -16,7 +16,7 @@ oauth2schema=fastapi.security.OAuth2PasswordBearer(tokenUrl="/User/Login/")
 
 JWT_SECRET="SteveWenJWTScrect"
 def register_user(Register:_schema.Register,db_session=fastapi.Depends(db_model.connection_to_database)):
-    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), "Student")
+    register_user = db_model.User(Register.User_ID, passlib.hash.bcrypt.hash(Register.Password), "Student", Register.Ref)
     db_session.add(register_user)
     db_session.commit()
     try:
@@ -95,7 +95,7 @@ async def membership_init(CID,db_session,user:_schema.User):
 
 
 async def itemcontent(CID,Itemname):
-    f = io.open(file="./mds/" + CID + "/" + Itemname + ".md", mode="br+")
+    f = io.open(file="./mds/" + CID + "/" + Itemname + ".md", mode="r")
     content=f.read()
     f.close()
     return content
@@ -122,7 +122,7 @@ async def newWord(TName:str,db_session):
 
 async def getWordcontent(TName:str,db_session):
     try:
-        f = io.open(file="./mds/Words/" + TName + ".md", mode="br+")
+        f = io.open(file="./mds/Words/" + TName + ".md", mode="r")
         content = f.read()
         f.close()
         return content
@@ -141,3 +141,28 @@ async def update_entry(NewEntry:_schema.UpdateEntry,db_session):
             raise fastapi.HTTPException(status_code=404,detail="Unknown error when writing to md")
     else:
         raise fastapi.HTTPException(status_code=404,detail="Entry not found")
+
+async def update_member(Update:_schema.UpdateMembership,user:_schema.User,db_session):
+    result = db_session.query(db_model.User).filter(Update.User_ID==db_model.User.User_ID,user.User_ID==db_model.User.Ref).first()
+    if type(result)==db_model.User:
+        result = db_session.query(db_model.Membership).filter(Update.User_ID == db_model.Membership.User_ID,Update.CourseID==db_model.Membership.CourseID).first()
+        if type(result)==db_model.Membership:
+            if Update.Time == "LifeTime":
+                result.DateExpire=datetime(2099,12,30,12,0,0)
+                db_session.commit()
+                return {"Msg":"Updated"}
+            elif Update.Time == "One day":
+                now_plus_one=datetime.now() + timedelta(days=1)
+                result.DateExpire=now_plus_one
+                db_session.commit()
+                return {"Msg": "Updated"}
+            elif Update.Time == "Cancel":
+                result.DateExpire=datetime(2010,12,30,12,0,0)
+                db_session.commit()
+                return {"Msg":"Updated"}
+            else:
+                raise fastapi.HTTPException(status_code=404,detail="Cant find the Time option")
+
+
+    else:
+        raise fastapi.HTTPException(status_code=402,detail="Student is not under your management")

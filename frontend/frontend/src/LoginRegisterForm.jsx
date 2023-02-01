@@ -53,6 +53,7 @@ const LoginForm = () => {
   const [snackmsg,setsnackmsg]=snackmsg1
   const [snackseverity,setsnackseverity]=snackseverity1
   const [add,setadd]=useContext(BackendContext)
+  const [ref,setref]=useState("")
 
   const handleLogin = async() => {
     //
@@ -92,8 +93,6 @@ const LoginForm = () => {
           console.log('Error', error.message);
         }
       })
-
-      setnotiopen(true);
     }
     else{
       if(User_ID.length===0)
@@ -123,7 +122,8 @@ const LoginForm = () => {
         },
         data:{
           User_ID:RegUser_ID,
-          Password:RegPassword
+          Password:RegPassword,
+          Ref:ref
         }
       }
       axios.request(requestoption)
@@ -158,7 +158,7 @@ const LoginForm = () => {
         setnotiopen(true);
       }
       else{
-        if(RegPassword!=ConfirmPassword)
+        if(RegPassword!==ConfirmPassword)
         {
           setErrorMsg("两次密码不相同")
           setnotifytype("warning")
@@ -333,6 +333,18 @@ const LoginForm = () => {
                   variant="filled"
                   value={ConfirmPassword}
                   onChange={handleregconchange}
+                  />
+                  
+                  <TextField
+                  autoFocus
+                  margin="dense"
+                  id="outlined-basic"
+                  label="推荐码"
+                  helperText="如果没有填空也行哦"
+                  fullWidth
+                  variant="filled"
+                  value={ref}
+                  onChange={(event)=>{setref(event.target.value)}}
                   />
 
                   <Snackbar
