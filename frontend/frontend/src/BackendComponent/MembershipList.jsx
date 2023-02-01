@@ -192,7 +192,7 @@ export const MembershipList = () => {
             }
             <Divider sx={{marginTop:2}} />
             <FormControl sx={{width:"70%"}}>
-            <InputLabel sx={{marginTop:2}}>课程ID</InputLabel>
+            <InputLabel sx={{marginTop:2}}>设置时间</InputLabel>
               <Select
                 value={time}
                 label="设置时间"
