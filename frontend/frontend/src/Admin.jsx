@@ -32,12 +32,7 @@ export const Admin = () => {
   const [Super,setSuper] = superadmin1
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(Super!==true)
-    {
-      navigate('/')
-    }
-  },[Super])
+  
 
   return (
     <>

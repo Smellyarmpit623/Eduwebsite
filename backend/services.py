@@ -146,23 +146,27 @@ async def update_member(Update:_schema.UpdateMembership,user:_schema.User,db_ses
     result = db_session.query(db_model.User).filter(Update.User_ID==db_model.User.User_ID,user.User_ID==db_model.User.Ref).first()
     if type(result)==db_model.User:
         result = db_session.query(db_model.Membership).filter(Update.User_ID == db_model.Membership.User_ID,Update.CourseID==db_model.Membership.CourseID).first()
-        if type(result)==db_model.Membership:
-            if Update.Time == "LifeTime":
-                result.DateExpire=datetime(2099,12,30,12,0,0)
-                db_session.commit()
-                return {"Msg":"Updated"}
-            elif Update.Time == "One day":
-                now_plus_one=datetime.now() + timedelta(days=1)
-                result.DateExpire=now_plus_one
-                db_session.commit()
-                return {"Msg": "Updated"}
-            elif Update.Time == "Cancel":
-                result.DateExpire=datetime(2010,12,30,12,0,0)
-                db_session.commit()
-                return {"Msg":"Updated"}
-            else:
-                raise fastapi.HTTPException(status_code=404,detail="Cant find the Time option")
+        if type(result)!=db_model.Membership:
+            new=db_model.Membership(User_ID=Update.User_ID,CourseID=Update.CourseID,DateExpire=datetime.now())
+            db_session.add(new)
+            db_session.commit()
+        result = db_session.query(db_model.Membership).filter(Update.User_ID == db_model.Membership.User_ID,Update.CourseID == db_model.Membership.CourseID).first()
 
+        if Update.Time == "LifeTime":
+            result.DateExpire=datetime(2099,12,30,12,0,0)
+            db_session.commit()
+            return {"Msg":"Updated"}
+        elif Update.Time == "One day":
+            now_plus_one=datetime.now() + timedelta(days=1)
+            result.DateExpire=now_plus_one
+            db_session.commit()
+            return {"Msg": "Updated"}
+        elif Update.Time == "Cancel":
+            result.DateExpire=datetime(2010,12,30,12,0,0)
+            db_session.commit()
+            return {"Msg":"Updated"}
+        else:
+            raise fastapi.HTTPException(status_code=404,detail="Cant find the Time option")
 
     else:
         raise fastapi.HTTPException(status_code=402,detail="Student is not under your management")

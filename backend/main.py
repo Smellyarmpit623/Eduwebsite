@@ -166,9 +166,6 @@ async def Student_List(user:schema.User=fastapi.Depends(get_current_user),db_ses
         raise fastapi.HTTPException(status_code=403,detail="Not a Super Admin")
 
 
-
-
-
 @app.put("/SuperAdmin/Membership_Update/")
 async def Membership_Update(Update:schema.UpdateMembership,user:schema.User=fastapi.Depends(get_current_user),db_session=fastapi.Depends(connection_to_database)):
     if user.Title == "Super Admin":

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../Context/UserContext';
+import { SnackContext } from '../Context/Snackbar';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -20,7 +23,18 @@ const rows = [
 ];
 
 
+
 export const Homepage = () => {
+  const {token1,admin1,superadmin1}=useContext(UserContext)
+  const [token,settoken]=token1
+  const [Super,setSuper] = superadmin1
+  const navigate = useNavigate();
+  const {GBsnack1,snackmsg1,snackseverity1} = useContext(SnackContext)
+  const [GBsnack,setGBsnack]=GBsnack1
+  const [snackmsg,setsnackmsg]=snackmsg1
+  const [snackseverity,setsnackseverity] = snackseverity1
+
+
   return (
     <TableContainer component={Paper} sx={{marginTop:5, width:"80%"}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

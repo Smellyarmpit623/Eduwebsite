@@ -6,7 +6,7 @@ import { SnackContext } from '../Context/Snackbar'
 import { UserContext } from '../Context/UserContext'
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/system'
-import { Autocomplete, Divider, FormControl, Grid, Input, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
+import { Autocomplete, Divider, Fab, FormControl, FormHelperText, Grid, Input, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 
 
 
@@ -34,9 +34,56 @@ export const MembershipList = () => {
   const [User_ID,setUser_ID]=useState("")
   const [user_list,setuser_list]=useState([{}])
   const [list,setlist]=useState([{}])
+  const [time,settime]=useState("")
 
 
- 
+  const handle_update=async()=>{
+    const requestoption={
+      method:"PUT",
+      url: add+"/SuperAdmin/Membership_Update/",
+      headers: {
+        "Accept":"application/json",
+        Authorization: "Bearer " + token,
+      },
+      data:{
+        CourseID:CID,
+        User_ID:User_ID,
+        Time:time
+      }
+    }
+    await axios.request(requestoption)
+    .then(function(response){ 
+
+      setsnackmsg("操作成功 😊")
+      setsnackseverity("success")
+      setGBsnack(true);
+      navigate(0)
+
+    })
+    .catch(function(error){
+      if(error.response.status===403)
+      {
+        setsnackmsg("权限不足")
+        setsnackseverity("warning")
+        setGBsnack(true);
+        navigate("/index")
+      }
+      if(error.response.status===402)
+      {
+        setsnackmsg("学生不在你的管理下 或 找不到该学生")
+        setsnackseverity("error")
+        setGBsnack(true);
+        navigate("/index")
+      }
+      if(error.response.status===404)
+      {
+        setsnackmsg("时间选项不合法")
+        setsnackseverity("warning")
+        setGBsnack(true);
+        navigate("/index")
+      }
+    })
+  }
 
   useEffect(()=>{ 
     const get_list=async()=>{
@@ -104,7 +151,11 @@ export const MembershipList = () => {
     <Grid container spacing={3}>
       <Grid item xs={6}>
         <Box sx={{m:5, height: 850, width: '80%' }}>
-          {data.length===0?(null):(<DataGrid getRowId={(row)=>row.MembershipID} onRowDoubleClick={(row)=>console.log(row)} pageSize={20} rowsPerPageOptions={[5,10,20,30]} columns={columns} rows={data} />)}
+          {data.length===0?(null):(<DataGrid getRowId={(row)=>row.MembershipID} onRowClick={(row)=>{
+            setCID(row.row.CourseID)
+            setUser_ID(row.row.User_ID)
+            console.log(row.row,row.User_ID)
+            }} pageSize={20} rowsPerPageOptions={[5,10,20,30]} columns={columns} rows={data} />)}
         </Box>
       </Grid>
       <Grid item xs={4}>
@@ -117,6 +168,7 @@ export const MembershipList = () => {
               value={CID}
               label="课程ID"
               size='small'
+              fullWidth={true}
               onChange={(e)=>setCID(e.target.value)}
               >
               <MenuItem value={'CAB-202'}>CAB-202</MenuItem>
@@ -131,12 +183,41 @@ export const MembershipList = () => {
               disablePortal
               options={user_list}
               sx={{ width: '50%', marginTop:2 }}
-              renderInput={(params) => <TextField onChange={(event=>setUser_ID(event.target.value))} {...params} label="学生ID" />
+              renderInput={(params) => <TextField value={User_ID} placeholder={User_ID} onChange={(event=>{
+                setUser_ID(event.target.value)
+                console.log(event.target.value,User_ID)
+              })} {...params} label="学生ID" />
               }
             />)
             }
             <Divider sx={{marginTop:2}} />
+            <FormControl sx={{width:"70%"}}>
+            <InputLabel sx={{marginTop:2}}>课程ID</InputLabel>
+              <Select
+                value={time}
+                label="设置时间"
+                sx={{marginTop:2}}
+                size='medium'
+                fullWidth={true}
+                onChange={(e)=>settime(e.target.value)}
+                >
+                <MenuItem value={'One day'}>课程时间一天 体验课程 😉</MenuItem>
+                <MenuItem value={'LifeTime'}>终身课程时间 全款用户 😄</MenuItem>
+                <MenuItem value={'Cancel'}>取消课程资格 😓</MenuItem>
+              </Select>
+              
+            </FormControl>
+            <Divider sx={{marginTop:2}} />
 
+            <Fab color="primary" onClick={handle_update} aria-label="edit" variant='extended' sx={{
+                
+                marginTop:3,
+                left:"77%"
+              }}>
+                  
+                  更新数据
+            </Fab>
+            
          </Box>
          </Box>
 
